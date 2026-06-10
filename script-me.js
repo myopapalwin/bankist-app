@@ -98,7 +98,7 @@ const createUserName = (name) => {
     .map((n) => n[0])
     .join("");
 };
-console.log(createUserName("Sarah Smit"));
+
 state.accounts.forEach((account) => {
   account.userName = createUserName(account.owner);
 });
@@ -115,19 +115,25 @@ const view = {
   },
 
   clearInput() {
-    UI.form.user.value = "";
-    UI.form.pin.value = "";
+    UI.login.user.value = "";
+    UI.login.pin.value = "";
+    // UI.movements.container.innerHTML = "";
   },
 
   showMovements(movements) {
-    UI.movements.container.innerHTML = "";
+    UI.movements.container.style.display = "none";
 
     movements.forEach((movement, i) => {
-      const type = mov > 0 ? "deposit" : "withdrawal";
-      const html = `<div class="movements__row">
-              <div class="movements__type movements__type--${type}"> ${i + 1} ${type}</div>
-              <div class="movements__value">${movement}</div>
-            </div>`;
+      console.log(movement);
+      const type = movement > 0 ? "deposit" : "withdrawal";
+      const html = `
+      <div class="movements__row">
+        <div class="movements__type movements__type--${type}">${
+          i + 1
+        } ${type}</div>
+        <div class="movements__value">${movement}€</div>
+      </div>
+            `;
 
       UI.movements.container.insertAdjacentHTML("afterbegin", html);
     });
@@ -138,19 +144,23 @@ const view = {
 // CONTROLLER (LOGIC LAYER)
 // =========================
 const authController = (() => {
-  const findAccount = (user) => {
-    const normalizeName = normalize(user); // call
+  const findAccount = (userInputName) => {
+    const normalizeName = normalize(userInputName); // call
 
-    const result = state.accounts.find((account) => {
-      const ownerName = normalize(account.owner);
+    // Find user name
+    const findUserName = state.accounts.find((account) => {
+      // loop and find in api array
       const userName = normalize(account.userName);
-
-      return (
-        ownerName.includes(normalizeName) || userName.includes(normalizeName)
-      );
+      return userName === normalizeName;
     });
-    console.log(result);
-    return result;
+
+    if (findUserName) return findUserName;
+
+    // Find owner name
+    const findOwnerName = state.accounts.find((account) => {
+      const ownerName = normalize(account.owner);
+      return ownerName.includes(normalizeName);
+    });
   };
 
   const validPin = (account, inputPin) => {
@@ -159,16 +169,20 @@ const authController = (() => {
 
   const login = (user, pin) => {
     const acc = findAccount(user);
+    console.log(acc);
 
     if (!user || !pin) {
+      UI.movements.container.style.display = "none";
       return view.showError("Please input user and password");
     }
 
     if (!acc) {
+      UI.movements.container.style.display = "none";
       return view.showError("User not found!");
     }
 
     if (!validPin(acc, pin)) {
+      UI.movements.container.style.display = "none";
       return view.showError("Invalid Pin !");
     }
 
@@ -177,7 +191,10 @@ const authController = (() => {
     view.showSuccess(acc);
 
     view.showMovements(acc.movements);
-    console.log(acc.movements);
+
+    UI.movements.container.style.display = "block";
+
+    view.clearInput();
   };
 
   return {
