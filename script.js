@@ -1,54 +1,14 @@
 "use strict";
 
-// App container
-// const appContainer = document.querySelector(".app");
-
-// Balance
-// const balanceValue = document.querySelector(".balance__value");
-// const balanceDate = document.querySelector(".date");
-
-// Movements
-// const containerMovements = document.querySelector(".movements");
-
-// Summary
-// const summaryIn = document.querySelector(".summary__value--in");
-// const summaryOut = document.querySelector(".summary__value--out");
-// const summaryInterest = document.querySelector(".summary__value--interest");
-// const btnSort = document.querySelector(".btn--sort");
-
-// Login
-// const loginForm = document.querySelector(".login");
-// const inputLoginUser = document.querySelector(".login__input--user");
-// const inputLoginPin = document.querySelector(".login__input--pin");
-// const btnLogin = document.querySelector(".login__btn");
-
-// Transfer
-// const transferForm = document.querySelector(".form--transfer");
-// const inputTransferTo = document.querySelector(".form__input--to");
-// const inputTransferAmount = document.querySelector(".form__input--amount");
-// const btnTransfer = document.querySelector(".form__btn--transfer");
-
-// Loan
-// const loanForm = document.querySelector(".form--loan");
-// const inputLoanAmount = document.querySelector(".form__input--loan-amount");
-// const btnLoan = document.querySelector(".form__btn--loan");
-
-// Close account
-// const closeForm = document.querySelector(".form--close");
-// const inputCloseUser = document.querySelector(".form__input--user");
-// const inputClosePin = document.querySelector(".form__input--pin");
-// const btnClose = document.querySelector(".form__btn--close");
-
-// Timer
-// const labelTimer = document.querySelector(".timer");
-
 // =====================
 // DOM ELEMENTS (Feature-Based)
 // =====================
-
 const UI = {
   app: {
     container: document.querySelector(".app"),
+  },
+  slogon: {
+    welcome: document.querySelector(".welcome"),
   },
   balance: {
     value: document.querySelector(".balance__value"),
@@ -91,11 +51,9 @@ const UI = {
   },
 };
 
-// =====================
-// MVC Thinking (Simple)
-// =====================
-
-// ====== Model (Data) =======
+// =========================
+// MODEL (DATA LAYER)
+// =========================
 const account1 = {
   owner: "Jonas Schmedtmann",
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
@@ -126,63 +84,340 @@ const account4 = {
 
 const state = {
   currentAccount: null,
+  isSorted: true,
   accounts: [account1, account2, account3, account4],
 };
 
-// ====== View Render (UI update functions) ======
-const displayMovement = function (movements) {
-  UI.movements.container.innerHTML = "";
+// Helper
+const normalize = (str) => str.trim().toLowerCase();
 
-  movements.forEach((mov, i) => {
-    const type = mov > 0 ? "deposit" : "withdrawal";
-    const html = `
-      <div class="movements__row">
-        <div class="movements__type movements__type--${type}">
-          ${i + 1} ${type}
-        </div>
-        <div class="movements__value">${mov}</div>
-      </div>
-    `;
-    UI.movements.container.insertAdjacentHTML("afterbegin", html);
-  });
+// Create user name
+const createUserName = (name) => {
+  return name
+    .toLowerCase()
+    .split(" ")
+    .map((n) => n[0])
+    .join("");
 };
 
-displayMovement(account1.movements);
+state.accounts.forEach((account) => {
+  account.userName = createUserName(account.owner);
+});
 
-// ========= Controller =========== //
-// const handleLogin = function (e) {
-//   e.preventDefault();
+const calculateBalance = (movements) => {
+  console.log(movements);
+  const sum = movements.reduce((acc, cur) => acc + cur, 0);
+  console.log(sum);
+  return sum;
+};
 
-//   const inputUserName = UI.login.user.value;
-//   const inputPin = Number(UI.login.pin.value);
+const calculateInOut = (movements, filterFn) =>
+  movements.filter(filterFn).reduce((acc, cur) => acc + cur, 0);
 
-//   const currentUser = state.accounts.find((acc) => {
-//     acc.owner.toLowerCase().includes(inputUserName) && acc.pin === inputPin;
-//   });
-
-//   if (currentUser) {
-//     console.log("Actual user");
-//   } else {
-//     console.log("You are not register");
-//   }
+// const totalDeposit = (movements) => {
+//   const res = movements
+//     .filter((mov) => mov >= 0)
+//     .reduce((acc, cur) => acc + cur, 0);
+//   console.log(res);
+//   return res;
 // };
 
-const handleLogin = function (e) {
-  e.preventDefault();
+// const totalWidthdraw = (movements) => {
+//   const res = movements
+//     .filter((mov) => mov < 0)
+//     .reduce((acc, cur) => acc + cur, 0);
+//   console.log(res);
+//   return res;
+// };
 
-  const user = UI.login.user.value;
-  const pin = Number(UI.login.pin.value);
-
-  const account = state.accounts.find(
-    (acc) => acc.owner.includes(user) && acc.pin === pin,
-  );
-
-  if (account) {
-    state.currentAccount = account;
-
-    displayMovement(account.movements);
-    UI.app.container.style.opacity = 1;
-  }
+const model = {
+  canTransfer(sender, receiver, bal, amt) {
+    return receiver && sender && receiver != sender && amt > 0 && bal >= amt;
+  },
+  transferMoney(sender, receiver, amt) {
+    sender.movements.push(-amt);
+    receiver.movements.push(amt);
+  },
+  isCurrentAccount(user, pin, currentAccount) {
+    return (
+      currentAccount.userName === user && pin && pin === currentAccount.pin
+    );
+  },
+  sorting(movements) {
+    return [...movements].sort((a, b) => a - b);
+  },
 };
 
-UI.login.form.addEventListener("submit", handleLogin);
+// =========================
+// VIEW RENDER (UI LAYER)
+// =========================
+UI.movements.container.innerHTML = "";
+
+const view = {
+  showSuccess(account) {
+    UI.slogon.welcome.textContent = `Welcome back, ${account.owner}`;
+  },
+
+  showError(message) {
+    UI.slogon.welcome.textContent = `${message}`;
+  },
+
+  clearInput() {
+    UI.login.user.value = "";
+    UI.login.pin.value = "";
+    // UI.movements.container.innerHTML = "";
+  },
+
+  clearTransferInputs() {
+    UI.transfer.to.value = "";
+    UI.transfer.amount.value = "";
+  },
+
+  clearLoanInputs() {
+    UI.loan.amount.value = "";
+  },
+
+  clearCloseAccountInputs() {
+    UI.close.user.value = "";
+    UI.close.pin.value = "";
+  },
+
+  showMovements(movements) {
+    UI.movements.container.innerHTML = "";
+
+    movements.forEach((movement, i) => {
+      const type = movement > 0 ? "deposit" : "withdrawal";
+      const html = `
+      <div class="movements__row">
+        <div class="movements__type movements__type--${type}">${
+          i + 1
+        } ${type}</div>
+        <div class="movements__value">${movement} USD</div>
+      </div>
+            `;
+
+      UI.movements.container.insertAdjacentHTML("afterbegin", html);
+    });
+  },
+
+  showCurrentBalnce(balance) {
+    console.log("rendering", balance);
+    UI.balance.value.textContent = `${balance} USD`;
+  },
+
+  showTotalDeposit(value) {
+    UI.summary.in.textContent = `${Math.abs(value)} USD`;
+  },
+
+  showTotalWidthdraw(value) {
+    UI.summary.out.textContent = `${Math.abs(value)} USD`;
+  },
+
+  showInterest(deposit, value) {
+    UI.summary.interest.textContent = (deposit * value) / 100;
+  },
+};
+
+// =========================
+// CONTROLLER (LOGIC LAYER)
+// =========================
+const authController = (() => {
+  const findAccount = (userInputName) => {
+    const normalizeName = normalize(userInputName); // call
+
+    // Find user name
+    const findUserName = state.accounts.find((account) => {
+      // loop and find in api array
+      const userName = normalize(account.userName);
+      return userName === normalizeName;
+    });
+
+    if (findUserName) return findUserName;
+
+    // Find owner name
+    const findOwnerName = state.accounts.find((account) => {
+      const ownerName = normalize(account.owner);
+      return ownerName.includes(normalizeName);
+    });
+  };
+
+  const validPin = (account, inputPin) => {
+    return account.pin === Number(inputPin);
+  };
+
+  const login = (user, pin) => {
+    const acc = findAccount(user);
+    console.log(acc);
+
+    if (!user || !pin) {
+      UI.app.container.style.opacity = 0;
+      return view.showError("Please input user and password");
+    }
+
+    if (!acc) {
+      UI.app.container.style.opacity = 0;
+      return view.showError("User not found!");
+    }
+
+    if (!validPin(acc, pin)) {
+      UI.app.container.style.opacity = 0;
+      return view.showError("Invalid Pin !");
+    }
+
+    state.currentAccount = acc;
+
+    view.showSuccess(acc);
+
+    view.showMovements(acc.movements);
+
+    // calculating balance
+    const balance = calculateBalance(acc.movements);
+    view.showCurrentBalnce(balance);
+
+    // calculating deposit
+    const deposit = calculateInOut(acc.movements, (mov) => mov >= 0);
+    view.showTotalDeposit(deposit);
+
+    // calculating withdraw
+    const widthdraw = calculateInOut(acc.movements, (mov) => mov < 0);
+    view.showTotalWidthdraw(widthdraw);
+
+    view.showInterest(deposit, 1.1);
+
+    UI.app.container.style.opacity = 100;
+
+    view.clearInput();
+  };
+
+  const transfer = (rec, amt) => {
+    const sender = state.currentAccount;
+    const receiver = findAccount(rec);
+
+    // Balance before transfer
+    const currentBalance = calculateBalance(sender.movements);
+    const amount = Number(amt);
+
+    if (!model.canTransfer(sender, receiver, currentBalance, amount)) {
+      view.showError("Cannot Transfer!, please try again later");
+      return; // Function stop;
+    }
+
+    model.transferMoney(sender, receiver, amount);
+
+    view.showMovements(sender.movements);
+
+    // Balance after transfer
+    const updateBalance = calculateBalance(sender.movements);
+    view.showCurrentBalnce(updateBalance);
+
+    // calculating deposit
+    const deposit = calculateInOut(sender.movements, (mov) => mov >= 0);
+    view.showTotalDeposit(deposit);
+
+    // calculating withdraw
+    const widthdraw = calculateInOut(sender.movements, (mov) => mov < 0);
+    view.showTotalWidthdraw(widthdraw);
+
+    view.clearTransferInputs();
+
+    console.log(sender, receiver, currentBalance, amount);
+  };
+
+  const loan = (amt) => {
+    const currentAcc = state.currentAccount;
+    const loanAmt = Number(amt);
+
+    // Update Movements
+    currentAcc.movements.push(loanAmt);
+    view.showMovements(currentAcc.movements);
+
+    // Update Balance
+    const balance = calculateBalance(currentAcc.movements);
+    view.showCurrentBalnce(balance);
+
+    // Update In/Out
+    const inAmt = calculateInOut(currentAcc.movements, (mov) => mov >= 0);
+    view.showTotalDeposit(inAmt);
+
+    const outAmt = calculateInOut(currentAcc.movements, (mov) => mov < 0);
+    view.showTotalWidthdraw(outAmt);
+    console.log(inAmt, outAmt);
+
+    // Clear form input
+    view.clearLoanInputs();
+  };
+
+  const closeAccount = (user, pin) => {
+    const usr = normalize(user);
+    const pinNumber = Number(pin);
+    const currentAccount = state.currentAccount;
+    const isCorrect = model.isCurrentAccount(usr, pinNumber, currentAccount);
+    if (isCorrect) {
+      UI.app.container.style.opacity = 0;
+    }
+
+    // Clear form input
+    view.clearCloseAccountInputs();
+  };
+
+  const sortMovements = () => {
+    const currentAccount = state.currentAccount;
+
+    const sortResult = state.isSorted
+      ? model.sorting(currentAccount.movements)
+      : currentAccount.movements;
+
+    view.showMovements(sortResult);
+    state.isSorted = !state.isSorted;
+  };
+
+  return {
+    login,
+    transfer,
+    loan,
+    closeAccount,
+    sortMovements,
+  };
+})();
+
+// =========================
+// EVENT
+// =========================
+UI.login.form.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const userName = UI.login.user.value;
+  const pin = UI.login.pin.value;
+
+  authController.login(userName, pin);
+});
+
+UI.transfer.form.addEventListener("submit", function (e) {
+  e.preventDefault();
+  const reciver = UI.transfer.to.value;
+  const amount = UI.transfer.amount.value;
+
+  authController.transfer(reciver, amount);
+});
+
+UI.loan.form.addEventListener("submit", function (e) {
+  e.preventDefault();
+  const amount = UI.loan.amount.value;
+  console.log(amount);
+
+  authController.loan(amount);
+});
+
+UI.close.form.addEventListener("submit", function (e) {
+  e.preventDefault();
+  const user = UI.close.user.value;
+  const pin = UI.close.pin.value;
+
+  authController.closeAccount(user, pin);
+});
+
+UI.summary.btnSort.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  authController.sortMovements();
+});
