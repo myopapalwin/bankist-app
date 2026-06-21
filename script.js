@@ -88,20 +88,6 @@ const state = {
   accounts: [account1, account2, account3, account4],
 };
 
-// =========================
-// HELPER
-// =========================
-const normalize = (str) => str.trim().toLowerCase();
-
-// Create user name
-const createUserName = (name) => {
-  return name
-    .toLowerCase()
-    .split(" ")
-    .map((n) => n[0])
-    .join("");
-};
-
 state.accounts.forEach((account) => {
   account.userName = createUserName(account.owner);
 });
