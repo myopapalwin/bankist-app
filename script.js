@@ -7,7 +7,7 @@ const UI = {
   app: {
     container: document.querySelector(".app"),
   },
-  slogon: {
+  slogan: {
     welcome: document.querySelector(".welcome"),
   },
   balance: {
@@ -52,7 +52,7 @@ const UI = {
 };
 
 // =========================
-// MODEL (DATA LAYER)
+// API LAYER
 // =========================
 const account1 = {
   owner: "Jonas Schmedtmann",
@@ -84,11 +84,13 @@ const account4 = {
 
 const state = {
   currentAccount: null,
-  isSorted: true,
+  sortState: false,
   accounts: [account1, account2, account3, account4],
 };
 
-// Helper
+// =========================
+// HELPER
+// =========================
 const normalize = (str) => str.trim().toLowerCase();
 
 // Create user name
@@ -104,36 +106,35 @@ state.accounts.forEach((account) => {
   account.userName = createUserName(account.owner);
 });
 
-const calculateBalance = (movements) => {
-  console.log(movements);
-  const sum = movements.reduce((acc, cur) => acc + cur, 0);
-  console.log(sum);
-  return sum;
-};
-
-const calculateInOut = (movements, filterFn) =>
-  movements.filter(filterFn).reduce((acc, cur) => acc + cur, 0);
-
-// const totalDeposit = (movements) => {
-//   const res = movements
-//     .filter((mov) => mov >= 0)
-//     .reduce((acc, cur) => acc + cur, 0);
-//   console.log(res);
-//   return res;
-// };
-
-// const totalWidthdraw = (movements) => {
-//   const res = movements
-//     .filter((mov) => mov < 0)
-//     .reduce((acc, cur) => acc + cur, 0);
-//   console.log(res);
-//   return res;
-// };
-
+// =========================
+// MODEL (DATA LAYER)
+// =========================
 const model = {
+  calculateBalance(movements) {
+    const sum = movements.reduce((acc, cur) => acc + cur, 0);
+    return sum;
+  },
+
+  // calculateInOut(movements, filterFn) {
+  //   return movements.filter(filterFn).reduce((acc, cur) => acc + cur, 0);
+  // },
+
+  calculateTotalDeposit(movements) {
+    return movements
+      .filter((mov) => mov >= 0)
+      .reduce((acc, cur) => acc + cur, 0);
+  },
+
+  calculateTotalWithdraw(movements) {
+    return movements
+      .filter((mov) => mov < 0)
+      .reduce((acc, cur) => acc + cur, 0);
+  },
+
   canTransfer(sender, receiver, bal, amt) {
     return receiver && sender && receiver != sender && amt > 0 && bal >= amt;
   },
+
   transferMoney(sender, receiver, amt) {
     sender.movements.push(-amt);
     receiver.movements.push(amt);
@@ -154,32 +155,20 @@ const model = {
 UI.movements.container.innerHTML = "";
 
 const view = {
+  showApp() {
+    UI.app.container.style.opacity = 100;
+  },
+
+  hideApp() {
+    UI.app.container.style.opacity = 0;
+  },
+
   showSuccess(account) {
-    UI.slogon.welcome.textContent = `Welcome back, ${account.owner}`;
+    UI.slogan.welcome.textContent = `Welcome back, ${account.owner}`;
   },
 
   showError(message) {
-    UI.slogon.welcome.textContent = `${message}`;
-  },
-
-  clearInput() {
-    UI.login.user.value = "";
-    UI.login.pin.value = "";
-    // UI.movements.container.innerHTML = "";
-  },
-
-  clearTransferInputs() {
-    UI.transfer.to.value = "";
-    UI.transfer.amount.value = "";
-  },
-
-  clearLoanInputs() {
-    UI.loan.amount.value = "";
-  },
-
-  clearCloseAccountInputs() {
-    UI.close.user.value = "";
-    UI.close.pin.value = "";
+    UI.slogan.welcome.textContent = `${message}`;
   },
 
   showMovements(movements) {
@@ -200,8 +189,7 @@ const view = {
     });
   },
 
-  showCurrentBalnce(balance) {
-    console.log("rendering", balance);
+  showCurrentBalance(balance) {
     UI.balance.value.textContent = `${balance} USD`;
   },
 
@@ -209,12 +197,31 @@ const view = {
     UI.summary.in.textContent = `${Math.abs(value)} USD`;
   },
 
-  showTotalWidthdraw(value) {
+  showTotalWithdraw(value) {
     UI.summary.out.textContent = `${Math.abs(value)} USD`;
   },
 
   showInterest(deposit, value) {
     UI.summary.interest.textContent = (deposit * value) / 100;
+  },
+
+  clearInput() {
+    UI.login.user.value = "";
+    UI.login.pin.value = "";
+  },
+
+  clearTransferInputs() {
+    UI.transfer.to.value = "";
+    UI.transfer.amount.value = "";
+  },
+
+  clearLoanInputs() {
+    UI.loan.amount.value = "";
+  },
+
+  clearCloseAccountInputs() {
+    UI.close.user.value = "";
+    UI.close.pin.value = "";
   },
 };
 
@@ -239,28 +246,50 @@ const authController = (() => {
       const ownerName = normalize(account.owner);
       return ownerName.includes(normalizeName);
     });
+
+    return findOwnerName;
   };
 
   const validPin = (account, inputPin) => {
     return account.pin === Number(inputPin);
   };
 
+  const updateUI = (account) => {
+    view.showMovements(account.movements);
+
+    // calculating balance
+    const balance = model.calculateBalance(account.movements);
+    view.showCurrentBalance(balance);
+
+    // calculating deposit
+    const deposit = model.calculateTotalDeposit(account.movements);
+    view.showTotalDeposit(deposit);
+
+    // calculating withdraw
+    const withdraw = model.calculateTotalWithdraw(account.movements);
+    view.showTotalWithdraw(withdraw);
+
+    // calculating interest
+    view.showInterest(deposit, account.interestRate);
+  };
+
   const login = (user, pin) => {
+    state.sortState = false;
+
     const acc = findAccount(user);
-    console.log(acc);
 
     if (!user || !pin) {
-      UI.app.container.style.opacity = 0;
+      view.hideApp();
       return view.showError("Please input user and password");
     }
 
     if (!acc) {
-      UI.app.container.style.opacity = 0;
+      view.hideApp();
       return view.showError("User not found!");
     }
 
     if (!validPin(acc, pin)) {
-      UI.app.container.style.opacity = 0;
+      view.hideApp();
       return view.showError("Invalid Pin !");
     }
 
@@ -268,23 +297,10 @@ const authController = (() => {
 
     view.showSuccess(acc);
 
-    view.showMovements(acc.movements);
+    // Update UI
+    updateUI(acc);
 
-    // calculating balance
-    const balance = calculateBalance(acc.movements);
-    view.showCurrentBalnce(balance);
-
-    // calculating deposit
-    const deposit = calculateInOut(acc.movements, (mov) => mov >= 0);
-    view.showTotalDeposit(deposit);
-
-    // calculating withdraw
-    const widthdraw = calculateInOut(acc.movements, (mov) => mov < 0);
-    view.showTotalWidthdraw(widthdraw);
-
-    view.showInterest(deposit, 1.1);
-
-    UI.app.container.style.opacity = 100;
+    view.showApp();
 
     view.clearInput();
   };
@@ -294,7 +310,7 @@ const authController = (() => {
     const receiver = findAccount(rec);
 
     // Balance before transfer
-    const currentBalance = calculateBalance(sender.movements);
+    const currentBalance = model.calculateBalance(sender.movements);
     const amount = Number(amt);
 
     if (!model.canTransfer(sender, receiver, currentBalance, amount)) {
@@ -304,44 +320,24 @@ const authController = (() => {
 
     model.transferMoney(sender, receiver, amount);
 
-    view.showMovements(sender.movements);
-
-    // Balance after transfer
-    const updateBalance = calculateBalance(sender.movements);
-    view.showCurrentBalnce(updateBalance);
-
-    // calculating deposit
-    const deposit = calculateInOut(sender.movements, (mov) => mov >= 0);
-    view.showTotalDeposit(deposit);
-
-    // calculating withdraw
-    const widthdraw = calculateInOut(sender.movements, (mov) => mov < 0);
-    view.showTotalWidthdraw(widthdraw);
+    // Update UI
+    updateUI(sender);
 
     view.clearTransferInputs();
-
-    console.log(sender, receiver, currentBalance, amount);
   };
 
   const loan = (amt) => {
     const currentAcc = state.currentAccount;
     const loanAmt = Number(amt);
+    const deposit = model.calculateTotalDeposit(currentAcc.movements);
 
-    // Update Movements
-    currentAcc.movements.push(loanAmt);
-    view.showMovements(currentAcc.movements);
+    // Bankist rule
+    if (deposit >= loanAmt * 0.1) {
+      currentAcc.movements.push(loanAmt);
+    }
 
-    // Update Balance
-    const balance = calculateBalance(currentAcc.movements);
-    view.showCurrentBalnce(balance);
-
-    // Update In/Out
-    const inAmt = calculateInOut(currentAcc.movements, (mov) => mov >= 0);
-    view.showTotalDeposit(inAmt);
-
-    const outAmt = calculateInOut(currentAcc.movements, (mov) => mov < 0);
-    view.showTotalWidthdraw(outAmt);
-    console.log(inAmt, outAmt);
+    // Update UI
+    updateUI(currentAcc);
 
     // Clear form input
     view.clearLoanInputs();
@@ -353,7 +349,9 @@ const authController = (() => {
     const currentAccount = state.currentAccount;
     const isCorrect = model.isCurrentAccount(usr, pinNumber, currentAccount);
     if (isCorrect) {
-      UI.app.container.style.opacity = 0;
+      const index = state.accounts.findIndex((acc) => acc === currentAccount);
+      state.accounts.splice(index, 1);
+      view.hideApp();
     }
 
     // Clear form input
@@ -363,12 +361,12 @@ const authController = (() => {
   const sortMovements = () => {
     const currentAccount = state.currentAccount;
 
-    const sortResult = state.isSorted
-      ? model.sorting(currentAccount.movements)
-      : currentAccount.movements;
+    const sortResult = state.sortState
+      ? currentAccount.movements
+      : model.sorting(currentAccount.movements);
 
     view.showMovements(sortResult);
-    state.isSorted = !state.isSorted;
+    state.sortState = !state.sortState;
   };
 
   return {
@@ -403,8 +401,6 @@ UI.transfer.form.addEventListener("submit", function (e) {
 UI.loan.form.addEventListener("submit", function (e) {
   e.preventDefault();
   const amount = UI.loan.amount.value;
-  console.log(amount);
-
   authController.loan(amount);
 });
 
