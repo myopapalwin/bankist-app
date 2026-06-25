@@ -2,6 +2,9 @@ export const UI = {
   app: {
     container: document.querySelector(".app"),
   },
+  loading: {
+    container: document.querySelector(".spinner"),
+  },
   slogan: {
     welcome: document.querySelector(".welcome"),
   },
@@ -53,8 +56,12 @@ export const view = {
     UI.app.container.style.opacity = 100;
   },
 
-  hideApp() {
-    UI.app.container.style.opacity = 0;
+  showLoading() {
+    UI.loading.container.classList.remove("hidden");
+  },
+
+  hideLoading() {
+    UI.loading.container.classList.add("hidden");
   },
 
   showSuccess(account) {
@@ -69,13 +76,13 @@ export const view = {
     UI.movements.container.innerHTML = "";
 
     movements.forEach((movement, i) => {
-      const type = movement > 0 ? "deposit" : "withdrawal";
+      // const type = movement > 0 ? "deposit" : "withdrawal";
       const html = `
       <div class="movements__row">
-        <div class="movements__type movements__type--${type}">${
+        <div class="movements__type movements__type--${movement.type}">${
           i + 1
-        } ${type}</div>
-        <div class="movements__value">${movement} USD</div>
+        } ${movement.type}</div>
+        <div class="movements__value">${movement.amount} USD</div>
       </div>
             `;
 
@@ -116,5 +123,15 @@ export const view = {
   clearCloseAccountInputs() {
     UI.close.user.value = "";
     UI.close.pin.value = "";
+  },
+
+  showLoggedOutState() {
+    UI.slogan.welcome.textContent = `Login to get started`;
+    UI.movements.container.innerHTML = "";
+    UI.balance.value.textContent = `0 USD`;
+    UI.summary.in.textContent = `0 USD`;
+    UI.summary.out.textContent = `0 USD`;
+    UI.summary.interest.textContent = `0 USD`;
+    UI.app.container.style.opacity = 0;
   },
 };

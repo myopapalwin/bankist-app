@@ -1,0 +1,31 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "full_name": "Jonas Schmedtmann",
+      "transactions": [
+        { "amount": 200, "type": "deposit" },
+        { "amount": 400, "type": "withdrawal" },
+        { "amount": 450, "type": "withdrawal" },
+        { "amount": 750, "type": "deposit" },
+        { "amount": 3000, "type": "deposit" }
+      ],
+      "interest_rate": 1.2,
+      "security_pin": 1111
+    },
+
+    {
+      "id": 2,
+      "full_name": "Jessica Davis",
+      "transactions": [
+        { "amount": 200, "type": "withdrawal" },
+        { "amount": 800, "type": "deposit" },
+        { "amount": 450, "type": "withdrawal" },
+        { "amount": 750, "type": "deposit" },
+        { "amount": 300, "type": "deposit" }
+      ],
+      "interest_rate": 1.5,
+      "security_pin": 2222
+    }
+  ]
+}
