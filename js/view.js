@@ -47,6 +47,17 @@ export const UI = {
   timer: {
     label: document.querySelector(".timer"),
   },
+  register: {
+    container: document.querySelector(".register"),
+    notic: document.querySelector(".notic"),
+    title: document.querySelector(".register-title"),
+
+    form: document.querySelector(".register_form"),
+    ownername: document.getElementById("register__ownername"),
+    password: document.getElementById("register__password"),
+    confirmPass: document.getElementById("register__confirm_password"),
+    rate: document.getElementById("register__input_rate"),
+  },
 };
 
 UI.movements.container.innerHTML = "";
@@ -70,6 +81,19 @@ export const view = {
 
   showError(message) {
     UI.slogan.welcome.textContent = `${message}`;
+  },
+
+  renderErrors(errors) {
+    errors.forEach((error) => {
+      document.querySelector(`[data-error="${error.field}"]`).textContent =
+        error.message;
+    });
+  },
+
+  clearErrors() {
+    document.querySelectorAll("[data-error]").forEach((el) => {
+      el.textContent = "";
+    });
   },
 
   showMovements(movements) {
@@ -128,10 +152,20 @@ export const view = {
   showLoggedOutState() {
     UI.slogan.welcome.textContent = `Login to get started`;
     UI.movements.container.innerHTML = "";
+    UI.register.container.innerHTML = "";
     UI.balance.value.textContent = `0 USD`;
     UI.summary.in.textContent = `0 USD`;
     UI.summary.out.textContent = `0 USD`;
     UI.summary.interest.textContent = `0 USD`;
     UI.app.container.style.opacity = 0;
+  },
+
+  getRegisterFormData() {
+    return {
+      ownername: UI.register.ownername.value,
+      password: UI.register.password.value,
+      confirmPass: UI.register.confirmPass.value,
+      rate: UI.register.rate.value,
+    };
   },
 };

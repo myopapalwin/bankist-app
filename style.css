@@ -88,6 +88,23 @@ nav {
   color: #777;
 }
 
+/* Register Form */
+.register {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+  transition: all 1s;
+  margin-top: 10rem;
+}
+
+.register_form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 200px;
+}
+
 /* MAIN */
 .app {
   position: relative;
