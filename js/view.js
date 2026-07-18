@@ -21,6 +21,14 @@ export const UI = {
     interest: document.querySelector(".summary__value--interest"),
     btnSort: document.querySelector(".btn--sort"),
   },
+  register: {
+    container: document.querySelector(".register"),
+    form: document.querySelector(".register_form"),
+    ownername: document.getElementById("register__ownername"),
+    password: document.getElementById("register__password"),
+    confirmPass: document.getElementById("register__confirm_password"),
+    rate: document.getElementById("register__input_rate"),
+  },
   login: {
     form: document.querySelector(".login"),
     user: document.querySelector(".login__input--user"),
@@ -47,16 +55,11 @@ export const UI = {
   timer: {
     label: document.querySelector(".timer"),
   },
-  register: {
-    container: document.querySelector(".register"),
-    notic: document.querySelector(".notic"),
-    title: document.querySelector(".register-title"),
-
-    form: document.querySelector(".register_form"),
-    ownername: document.getElementById("register__ownername"),
-    password: document.getElementById("register__password"),
-    confirmPass: document.getElementById("register__confirm_password"),
-    rate: document.getElementById("register__input_rate"),
+  modal: {
+    container: document.querySelector(".modal"),
+    modalClose: document.querySelector(".close-modal"),
+    overlay: document.querySelector(".overlay"),
+    error: document.querySelector(".error"),
   },
 };
 
@@ -64,7 +67,9 @@ UI.movements.container.innerHTML = "";
 
 export const view = {
   showApp() {
-    UI.app.container.style.opacity = 100;
+    // UI.app.container.style.opacity = 100;
+    UI.app.container.classList.remove("hidden");
+    UI.register.container.classList.add("hidden");
   },
 
   showLoading() {
@@ -77,10 +82,17 @@ export const view = {
 
   showSuccess(account) {
     UI.slogan.welcome.textContent = `Welcome back, ${account.owner}`;
+    UI.app.container.classList.remove("hidden");
   },
 
-  showError(message) {
-    UI.slogan.welcome.textContent = `${message}`;
+  showLoginError(errors) {
+    errors.forEach((error) => {
+      UI.slogan.welcome.textContent = `${error.message}`;
+    });
+  },
+
+  clearLoginError() {
+    UI.slogan.welcome.textContent = "";
   },
 
   renderErrors(errors) {
@@ -90,10 +102,23 @@ export const view = {
     });
   },
 
-  clearErrors() {
+  clearRegisterErrors() {
     document.querySelectorAll("[data-error]").forEach((el) => {
       el.textContent = "";
     });
+  },
+
+  showModal(errors) {
+    UI.modal.container.classList.remove("hidden");
+    UI.modal.overlay.classList.remove("hidden");
+    errors.forEach((error) => {
+      UI.modal.error.textContent = error;
+    });
+  },
+
+  closeModal() {
+    UI.modal.container.classList.add("hidden");
+    UI.modal.overlay.classList.add("hidden");
   },
 
   showMovements(movements) {
@@ -157,7 +182,8 @@ export const view = {
     UI.summary.in.textContent = `0 USD`;
     UI.summary.out.textContent = `0 USD`;
     UI.summary.interest.textContent = `0 USD`;
-    UI.app.container.style.opacity = 0;
+    UI.app.container.classList.add("hidden");
+    // UI.app.container.style.opacity = 0;
   },
 
   getRegisterFormData() {
@@ -166,6 +192,13 @@ export const view = {
       password: UI.register.password.value,
       confirmPass: UI.register.confirmPass.value,
       rate: UI.register.rate.value,
+    };
+  },
+
+  getLoginFormData() {
+    return {
+      username: UI.login.user.value,
+      password: UI.login.pin.value,
     };
   },
 };

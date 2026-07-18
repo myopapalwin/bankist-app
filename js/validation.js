@@ -1,3 +1,5 @@
+// import { state } from "./model";
+
 export const validation = {
   // Rule Validators
   validateRequired(value, fl, msg) {
@@ -46,6 +48,7 @@ export const validation = {
     }
   },
 
+  // Register helper
   validateOwnerName(name) {
     const requiredError = validation.validateRequired(
       name,
@@ -120,6 +123,7 @@ export const validation = {
     if (matchPassword) return matchPassword;
   },
 
+  // Register Form
   handleRegister(formData) {
     const errors = [
       validation.validateOwnerName(formData.ownername),
@@ -127,6 +131,69 @@ export const validation = {
       validation.validateConfirmPass(formData.confirmPass, formData.password),
     ].filter(Boolean);
 
+    return errors;
+  },
+
+  // Login Form
+  handleLogin(formData, findAccountFn) {
+    const { username, password } = formData;
+    if (!username.trim() || !password.trim()) {
+      return {
+        errors: [
+          {
+            field: "login",
+            message: "Enter user name and password.",
+          },
+        ],
+        account: null,
+      };
+    }
+
+    const account = findAccountFn(username);
+
+    if (!account) {
+      return {
+        errors: [
+          {
+            field: "username",
+            message: "User not found.",
+          },
+        ],
+        account: null,
+      };
+    }
+
+    if (Number(password) !== account.pin) {
+      return {
+        errors: [
+          {
+            field: "password",
+            message: "Wrong password",
+          },
+        ],
+        account: null,
+      };
+    }
+
+    return {
+      errors: [],
+      account,
+    };
+  },
+
+  // Delete Account
+  isCurrentUser(user, pin, currentAccount) {
+    const errors = [];
+    if (
+      !user?.trim() ||
+      !pin ||
+      currentAccount.userName !== user ||
+      pin !== currentAccount.pin
+    ) {
+      errors.push("You can't delete! Account doesn't match");
+    }
+
+    errors.filter(Boolean);
     return errors;
   },
 };

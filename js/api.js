@@ -31,4 +31,44 @@ export const api = {
       return [];
     }
   },
+
+  async updateUser(id, data) {
+    try {
+      const response = await fetch(`${BASE_URL}/users/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP response: ${response.status}`);
+      }
+
+      return response.json();
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  },
+
+  async deleteUser(id) {
+    try {
+      const response = await fetch(`${BASE_URL}/users/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP response: ${response.status}`);
+      }
+
+      return response.json();
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  },
 };

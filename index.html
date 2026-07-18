@@ -82,7 +82,7 @@
       </form>
     </div>
 
-    <main class="app">
+    <main class="app hidden">
       <div class="spinner hidden">Loading...</div>
 
       <!-- BALANCE -->
@@ -167,7 +167,13 @@
       </p>
     </main>
 
-    <footer>&copy; by Jonas Schmedtmann. Don't claim as your own :)</footer>
+    <div class="modal hidden">
+      <button class="close-modal">&times;</button>
+      <h2 class="error">I'm a modal window 😍</h2>
+    </div>
+    <div class="overlay hidden"></div>
+
+    <!-- <footer>&copy; by Jonas Schmedtmann. Don't claim as your own :)</footer> -->
 
     <script type="module" src="./js/main.js"></script>
   </body>

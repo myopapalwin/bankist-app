@@ -26,6 +26,7 @@ export const model = {
     }
 
     const normalizeUser = {
+      id: newUser.id,
       owner: String(newUser.full_name).trim(),
       movements: (newUser.transactions ?? []).map((tc) =>
         tc.type === "deposit"
@@ -47,6 +48,7 @@ export const model = {
     const users = normalizeApiData(rawData);
     const normalizeUsers = users.map((user) => {
       return {
+        id: user.id,
         owner: String(user.full_name).trim(),
         movements: (user.transactions ?? []).map((tc) =>
           tc.type === "deposit"
@@ -68,21 +70,51 @@ export const model = {
   findAccount(userInputName) {
     const nmName = normalizeName(userInputName); // call
 
-    // Find user name
-    const findUserName = state.accounts.find((account) => {
+    // Find account with user name
+    const accWithUserName = state.accounts.find((account) => {
       const userName = normalizeName(account.userName);
       return userName === nmName;
     });
 
-    if (findUserName) return findUserName;
+    if (accWithUserName) return accWithUserName;
 
-    // Find owner name
-    const findOwnerName = state.accounts.find((account) => {
+    // Find account with owner name
+    const accWithOwnername = state.accounts.find((account) => {
       const ownerName = normalizeName(account.owner);
       return ownerName.includes(nmName);
     });
 
-    return findOwnerName;
+    return accWithOwnername;
+  },
+
+  transferMoney(sender, receiver, amt) {
+    sender.movements.push({ amount: -Math.abs(amt), type: "withdrawal" });
+    receiver.movements.push({ amount: Math.abs(amt), type: "deposit" });
+  },
+
+  loanMoney(deposit, loanAmt, acc) {
+    // Bankist rule
+    if (deposit >= loanAmt * 0.1) {
+      acc.movements.push({ amount: loanAmt, type: "deposit" });
+    }
+  },
+
+  async updateUserMovements(account) {
+    const transactions = account.movements.map((movement) => ({
+      amount: Math.abs(movement.amount),
+      type: movement.type,
+    }));
+
+    const updatedUser = await api.updateUser(account.id, { transactions });
+    return updatedUser;
+  },
+
+  async deleteCurrentUser(id) {
+    await api.deleteUser(id);
+
+    state.accounts = state.accounts.filter((acc) => acc.id !== id);
+
+    return state.accounts;
   },
 
   validPin(account, inputPin) {
@@ -108,24 +140,6 @@ export const model = {
     return movements
       .filter((mov) => mov.type === "withdrawal")
       .reduce((acc, cur) => acc + cur.amount, 0);
-  },
-
-  transferMoney(sender, receiver, amt) {
-    sender.movements.push({ amount: -Math.abs(amt), type: "withdrawal" });
-    receiver.movements.push({ amount: Math.abs(amt), type: "deposit" });
-  },
-
-  loanMoney(deposit, loanAmt, acc) {
-    // Bankist rule
-    if (deposit >= loanAmt * 0.1) {
-      acc.movements.push({ amount: loanAmt, type: "deposit" });
-    }
-  },
-
-  isCurrentAccount(user, pin, currentAccount) {
-    return (
-      currentAccount.userName === user && pin && pin === currentAccount.pin
-    );
   },
 
   sorting(movements) {
