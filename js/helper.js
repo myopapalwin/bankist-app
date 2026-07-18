@@ -1,7 +1,11 @@
 // =========================
 // HELPER
 // =========================
-export const normalize = (str) => str.trim().toLowerCase();
+export const normalizeName = (str) => str.trim().toLowerCase();
+
+export const normalizeApiData = (responseData) => {
+  return Array.isArray(responseData) ? responseData : [];
+};
 
 // Create user name
 export const createUserName = (name) => {

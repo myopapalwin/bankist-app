@@ -1,8 +1,8 @@
 // =========================
 // MODEL (DATA LAYER)
 // =========================
-import { createUserName, normalize } from "./helper.js";
-import { view } from "./view.js";
+import { api } from "./api.js";
+import { createUserName, normalizeName, normalizeApiData } from "./helper.js";
 
 export const state = {
   currentAccount: null,
@@ -11,31 +11,46 @@ export const state = {
 };
 
 export const model = {
-  async fetchData() {
-    try {
-      const response = await fetch("http://localhost:3000/users");
-      if (!response.ok) {
-        throw new Error(`Http response: ${response.status}`);
-      }
-      return response.json();
-    } catch (error) {
-      console.error(`Network Error: ${error.message}`);
-      return { result: [] };
-    }
-  },
+  async createUserData(formData) {
+    const rawData = {
+      full_name: formData.ownername,
+      transactions: [],
+      interest_rate: Number(formData.rate),
+      security_pin: Number(formData.password),
+    };
 
-  normalizeData(responseData) {
-    return Array.isArray(responseData) ? responseData : [];
+    const newUser = await api.createUser(rawData); // Sending to api
+
+    if (!newUser) {
+      throw new Error("Cannot create user");
+    }
+
+    const normalizeUser = {
+      id: newUser.id,
+      owner: String(newUser.full_name).trim(),
+      movements: (newUser.transactions ?? []).map((tc) =>
+        tc.type === "deposit"
+          ? { amount: Math.abs(tc.amount), type: "deposit" }
+          : { amount: -Math.abs(tc.amount), type: "withdrawal" },
+      ),
+      userName: createUserName(newUser.full_name),
+      interestRate: Number(newUser.interest_rate) || 0,
+      pin: Number(newUser.security_pin),
+    };
+
+    state.accounts.push(normalizeUser); // do not return this line >> this push method output array length
+    console.log(state.accounts);
+    return normalizeUser;
   },
 
   async getUserData() {
-    const rawData = await model.fetchData();
-    const users = model.normalizeData(rawData);
+    const rawData = await api.getUsers();
+    const users = normalizeApiData(rawData);
     const normalizeUsers = users.map((user) => {
       return {
-        id: Number(user.id),
+        id: user.id,
         owner: String(user.full_name).trim(),
-        movements: user.transactions.map((tc) =>
+        movements: (user.transactions ?? []).map((tc) =>
           tc.type === "deposit"
             ? { amount: Math.abs(tc.amount), type: "deposit" }
             : { amount: -Math.abs(tc.amount), type: "withdrawal" },
@@ -51,44 +66,55 @@ export const model = {
     }));
     return state.accounts;
   },
-  updateUI(account) {
-    view.showMovements(account.movements);
-
-    // calculating balance
-    const balance = model.calculateBalance(account.movements);
-    view.showCurrentBalance(balance);
-
-    // calculating deposit
-    const deposit = model.calculateTotalDeposit(account.movements);
-    view.showTotalDeposit(deposit);
-
-    // calculating withdraw
-    const withdraw = model.calculateTotalWithdraw(account.movements);
-    view.showTotalWithdraw(withdraw);
-
-    // calculating interest
-    const interest = model.calculateInterest(deposit, account.interestRate);
-    view.showInterest(interest);
-  },
 
   findAccount(userInputName) {
-    const normalizeName = normalize(userInputName); // call
+    const nmName = normalizeName(userInputName); // call
 
-    // Find user name
-    const findUserName = state.accounts.find((account) => {
-      const userName = normalize(account.userName);
-      return userName === normalizeName;
+    // Find account with user name
+    const accWithUserName = state.accounts.find((account) => {
+      const userName = normalizeName(account.userName);
+      return userName === nmName;
     });
 
-    if (findUserName) return findUserName;
+    if (accWithUserName) return accWithUserName;
 
-    // Find owner name
-    const findOwnerName = state.accounts.find((account) => {
-      const ownerName = normalize(account.owner);
-      return ownerName.includes(normalizeName);
+    // Find account with owner name
+    const accWithOwnername = state.accounts.find((account) => {
+      const ownerName = normalizeName(account.owner);
+      return ownerName.includes(nmName);
     });
 
-    return findOwnerName;
+    return accWithOwnername;
+  },
+
+  transferMoney(sender, receiver, amt) {
+    sender.movements.push({ amount: -Math.abs(amt), type: "withdrawal" });
+    receiver.movements.push({ amount: Math.abs(amt), type: "deposit" });
+  },
+
+  loanMoney(deposit, loanAmt, acc) {
+    // Bankist rule
+    if (deposit >= loanAmt * 0.1) {
+      acc.movements.push({ amount: loanAmt, type: "deposit" });
+    }
+  },
+
+  async updateUserMovements(account) {
+    const transactions = account.movements.map((movement) => ({
+      amount: Math.abs(movement.amount),
+      type: movement.type,
+    }));
+
+    const updatedUser = await api.updateUser(account.id, { transactions });
+    return updatedUser;
+  },
+
+  async deleteCurrentUser(id) {
+    await api.deleteUser(id);
+
+    state.accounts = state.accounts.filter((acc) => acc.id !== id);
+
+    return state.accounts;
   },
 
   validPin(account, inputPin) {
@@ -114,24 +140,6 @@ export const model = {
     return movements
       .filter((mov) => mov.type === "withdrawal")
       .reduce((acc, cur) => acc + cur.amount, 0);
-  },
-
-  transferMoney(sender, receiver, amt) {
-    sender.movements.push({ amount: -Math.abs(amt), type: "withdrawal" });
-    receiver.movements.push({ amount: Math.abs(amt), type: "deposit" });
-  },
-
-  loanMoney(deposit, loanAmt, acc) {
-    // Bankist rule
-    if (deposit >= loanAmt * 0.1) {
-      acc.movements.push({ amount: loanAmt, type: "deposit" });
-    }
-  },
-
-  isCurrentAccount(user, pin, currentAccount) {
-    return (
-      currentAccount.userName === user && pin && pin === currentAccount.pin
-    );
   },
 
   sorting(movements) {

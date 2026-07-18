@@ -1,36 +1,71 @@
 import { model, state } from "./model.js";
 import { view, UI } from "./view.js";
-import { normalize } from "./helper.js";
+import { normalizeName } from "./helper.js";
+import { validation } from "./validation.js";
+
+const controllerHelper = {
+  updateUI(account) {
+    view.showMovements(account.movements);
+
+    // calculating balance
+    const balance = model.calculateBalance(account.movements);
+    view.showCurrentBalance(balance);
+
+    // calculating deposit
+    const deposit = model.calculateTotalDeposit(account.movements);
+    view.showTotalDeposit(deposit);
+
+    // calculating withdraw
+    const withdraw = model.calculateTotalWithdraw(account.movements);
+    view.showTotalWithdraw(withdraw);
+
+    // calculating interest
+    const interest = model.calculateInterest(deposit, account.interestRate);
+    view.showInterest(interest);
+  },
+};
 
 export const accountController = {
-  login(user, pin) {
+  async createAccount(formData) {
+    try {
+      const errors = validation.handleRegister(formData);
+
+      view.clearRegisterErrors();
+
+      if (errors.length) {
+        console.log(errors.length);
+        view.renderErrors(errors);
+        return;
+      }
+
+      return await model.createUserData(formData);
+    } catch (error) {
+      console.error(error);
+    }
+  },
+
+  login(formData) {
     try {
       view.showLoading();
       state.sortState = false;
 
-      const acc = model.findAccount(user);
+      const result = validation.handleLogin(formData, model.findAccount);
+      // console.log(result);
 
-      if (!user || !pin) {
+      view.clearLoginError();
+
+      if (result.errors.length) {
         view.showLoggedOutState();
-        return view.showError("Please input user and password");
+        view.showLoginError(result.errors);
+        return; // !important
       }
 
-      if (!acc) {
-        view.showLoggedOutState();
-        return view.showError("User not found!");
-      }
+      state.currentAccount = result.account;
 
-      if (!model.validPin(acc, pin)) {
-        view.showLoggedOutState();
-        return view.showError("Invalid Pin !");
-      }
-
-      state.currentAccount = acc;
-
-      view.showSuccess(acc);
+      view.showSuccess(result.account);
 
       // Update UI
-      model.updateUI(acc);
+      controllerHelper.updateUI(result.account);
 
       view.showApp();
 
@@ -42,7 +77,7 @@ export const accountController = {
     }
   },
 
-  transfer(rec, amt) {
+  async transfer(rec, amt) {
     try {
       view.showLoading();
 
@@ -62,10 +97,16 @@ export const accountController = {
         view.showError("Cannot Transfer!, please try again later");
         return; // Function stop;
       }
+
       model.transferMoney(sender, receiver, amount);
 
+      await Promise.all([
+        model.updateUserMovements(sender),
+        model.updateUserMovements(receiver),
+      ]);
+
       // Update UI
-      model.updateUI(sender);
+      controllerHelper.updateUI(sender);
 
       view.clearTransferInputs();
     } catch (error) {
@@ -75,7 +116,7 @@ export const accountController = {
     }
   },
 
-  loan(amt) {
+  async loan(amt) {
     try {
       view.showLoading();
       const currentAcc = state.currentAccount;
@@ -84,8 +125,10 @@ export const accountController = {
 
       model.loanMoney(deposit, loanAmt, currentAcc);
 
+      await model.updateUserMovements(currentAcc);
+
       // Update UI
-      model.updateUI(currentAcc);
+      controllerHelper.updateUI(currentAcc);
 
       // Clear form input
       view.clearLoanInputs();
@@ -96,20 +139,27 @@ export const accountController = {
     }
   },
 
-  closeAccount(user, pin) {
-    const usr = normalize(user);
+  async closeAccount(user, pin) {
+    const usr = normalizeName(user);
     const pinNumber = Number(pin);
     const currentAccount = state.currentAccount;
-    const isCorrect = model.isCurrentAccount(usr, pinNumber, currentAccount);
-    if (isCorrect) {
-      const index = state.accounts.findIndex((acc) => acc === currentAccount);
-      state.accounts.splice(index, 1);
-      view.showLoggedOutState();
+
+    const error = validation.isCurrentUser(usr, pinNumber, currentAccount);
+    console.log(error);
+
+    if (error.length) {
+      view.showModal(error);
+      return;
     }
+
+    await model.deleteCurrentUser(currentAccount.id);
 
     state.currentAccount = null;
 
-    // Clear form input
+    view.showLoggedOutState();
+
+    console.log(state.accounts);
+
     view.clearCloseAccountInputs();
   },
 
@@ -135,13 +185,18 @@ const init = async () => {
     const users = await model.getUserData();
     console.log(users);
 
+    UI.register.form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const formData = view.getRegisterFormData();
+      accountController.createAccount(formData);
+    });
+
     UI.login.form.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      const userName = UI.login.user.value;
-      const pin = UI.login.pin.value;
-
-      accountController.login(userName, pin);
+      const formData = view.getLoginFormData();
+      accountController.login(formData);
     });
 
     UI.transfer.form.addEventListener("submit", function (e) {
@@ -170,6 +225,11 @@ const init = async () => {
       e.preventDefault();
 
       accountController.sortMovements();
+    });
+
+    UI.modal.modalClose.addEventListener("click", function (e) {
+      e.preventDefault();
+      view.closeModal();
     });
   } catch (error) {
     console.error(error);
