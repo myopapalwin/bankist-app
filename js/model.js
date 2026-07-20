@@ -39,7 +39,6 @@ export const model = {
     };
 
     state.accounts.push(normalizeUser); // do not return this line >> this push method output array length
-    console.log(state.accounts);
     return normalizeUser;
   },
 
@@ -92,11 +91,8 @@ export const model = {
     receiver.movements.push({ amount: Math.abs(amt), type: "deposit" });
   },
 
-  loanMoney(deposit, loanAmt, acc) {
-    // Bankist rule
-    if (deposit >= loanAmt * 0.1) {
-      acc.movements.push({ amount: loanAmt, type: "deposit" });
-    }
+  loanMoney(loanAmt, acc) {
+    acc.movements.push({ amount: loanAmt, type: "deposit" });
   },
 
   async updateUserMovements(account) {
@@ -117,18 +113,10 @@ export const model = {
     return state.accounts;
   },
 
-  validPin(account, inputPin) {
-    return account.pin === Number(inputPin);
-  },
-
   calculateBalance(movements) {
     const sum = movements.reduce((acc, cur) => acc + cur.amount, 0);
     return sum;
   },
-
-  // calculateInOut(movements, filterFn) {
-  //   return movements.filter(filterFn).reduce((acc, cur) => acc + cur, 0);
-  // },
 
   calculateTotalDeposit(movements) {
     return movements

@@ -85,10 +85,8 @@ export const view = {
     UI.app.container.classList.remove("hidden");
   },
 
-  showLoginError(errors) {
-    errors.forEach((error) => {
-      UI.slogan.welcome.textContent = `${error.message}`;
-    });
+  showLoginError(error) {
+    UI.slogan.welcome.textContent = `${error.message}`;
   },
 
   clearLoginError() {
@@ -108,12 +106,10 @@ export const view = {
     });
   },
 
-  showModal(errors) {
+  showModal(message) {
     UI.modal.container.classList.remove("hidden");
     UI.modal.overlay.classList.remove("hidden");
-    errors.forEach((error) => {
-      UI.modal.error.textContent = error;
-    });
+    UI.modal.error.textContent = message;
   },
 
   closeModal() {

@@ -54,9 +54,9 @@ export const accountController = {
 
       view.clearLoginError();
 
-      if (result.errors.length) {
+      if (result.error) {
         view.showLoggedOutState();
-        view.showLoginError(result.errors);
+        view.showLoginError(result.error);
         return; // !important
       }
 
@@ -77,26 +77,31 @@ export const accountController = {
     }
   },
 
-  async transfer(rec, amt) {
+  async transfer(username, amt) {
     try {
       view.showLoading();
 
       const sender = state.currentAccount;
-      const receiver = model.findAccount(rec);
 
       // Balance before transfer
       const currentBalance = model.calculateBalance(sender.movements);
       const amount = Number(amt);
 
-      if (
-        !Number.isFinite(amount) ||
-        amount <= 0 ||
-        sender === receiver ||
-        currentBalance < amount
-      ) {
-        view.showError("Cannot Transfer!, please try again later");
-        return; // Function stop;
+      const result = validation.validateTransfer(
+        amount,
+        sender,
+        username,
+        model.findAccount,
+        currentBalance,
+      );
+
+      if (result.error) {
+        view.clearTransferInputs();
+        view.showModal(result.error.message);
+        return;
       }
+
+      const receiver = result.receiver;
 
       model.transferMoney(sender, receiver, amount);
 
@@ -105,7 +110,7 @@ export const accountController = {
         model.updateUserMovements(receiver),
       ]);
 
-      // Update UI
+      // // Update UI
       controllerHelper.updateUI(sender);
 
       view.clearTransferInputs();
@@ -123,7 +128,14 @@ export const accountController = {
       const loanAmt = Number(amt);
       const deposit = model.calculateTotalDeposit(currentAcc.movements);
 
-      model.loanMoney(deposit, loanAmt, currentAcc);
+      const error = validation.validateLoanMoney(deposit, loanAmt, currentAcc);
+      console.log(error);
+
+      if (error) {
+        view.showModal(error.message);
+        return;
+      }
+      model.loanMoney(loanAmt, currentAcc);
 
       await model.updateUserMovements(currentAcc);
 
@@ -147,7 +159,7 @@ export const accountController = {
     const error = validation.isCurrentUser(usr, pinNumber, currentAccount);
     console.log(error);
 
-    if (error.length) {
+    if (error) {
       view.showModal(error);
       return;
     }
@@ -157,8 +169,6 @@ export const accountController = {
     state.currentAccount = null;
 
     view.showLoggedOutState();
-
-    console.log(state.accounts);
 
     view.clearCloseAccountInputs();
   },
