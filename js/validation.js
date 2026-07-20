@@ -1,5 +1,3 @@
-// import { state } from "./model";
-
 export const validation = {
   // Rule Validators
   validateRequired(value, fl, msg) {
@@ -123,6 +121,82 @@ export const validation = {
     if (matchPassword) return matchPassword;
   },
 
+  // Loan
+  validateLoanMoney(deposit, loanAmt, acc) {
+    if (!Number.isFinite(loanAmt) || loanAmt <= 0) {
+      return {
+        field: "amount",
+        message: "Please input valid amount",
+      };
+    }
+
+    if (deposit < loanAmt) {
+      return {
+        field: "loan",
+        message: "Loan amount must not exceed your deposite.",
+      };
+    }
+  },
+
+  // Transfer
+  validateTransfer(amount, sender, username, FindReceiverAccFn, balance) {
+    if (!Number.isFinite(amount) || !username.trim()) {
+      return {
+        error: {
+          field: "required",
+          message: "Please enter receiver account and amount.",
+        },
+        receiver: null,
+      };
+    }
+
+    const receiver = FindReceiverAccFn(username);
+
+    if (!receiver) {
+      return {
+        error: {
+          field: "receiver",
+          message: "Receiver account does not exist.",
+        },
+        receiver: null,
+      };
+    }
+
+    if (receiver === sender) {
+      return {
+        error: {
+          field: "sender",
+          message: "You can not transfer same account.",
+        },
+        receiver: null,
+      };
+    }
+
+    if (!Number.isFinite(amount) || amount <= 0) {
+      return {
+        error: {
+          field: "amount",
+          message: "Please input valid amount",
+        },
+        receiver: null,
+      };
+    }
+
+    if (amount >= balance) {
+      return {
+        error: {
+          field: "amount",
+          message: "Your transfer amount must not exceed your balance.",
+        },
+        receiver: null,
+      };
+    }
+
+    return {
+      receiver,
+    };
+  },
+
   // Register Form
   handleRegister(formData) {
     const errors = [
@@ -137,14 +211,14 @@ export const validation = {
   // Login Form
   handleLogin(formData, findAccountFn) {
     const { username, password } = formData;
+
     if (!username.trim() || !password.trim()) {
       return {
-        errors: [
-          {
-            field: "login",
-            message: "Enter user name and password.",
-          },
-        ],
+        error: {
+          field: "login",
+          message: "Enter user name and password.",
+        },
+
         account: null,
       };
     }
@@ -153,47 +227,41 @@ export const validation = {
 
     if (!account) {
       return {
-        errors: [
-          {
-            field: "username",
-            message: "User not found.",
-          },
-        ],
+        error: {
+          field: "username",
+          message: "User not found.",
+        },
         account: null,
       };
     }
 
     if (Number(password) !== account.pin) {
       return {
-        errors: [
-          {
-            field: "password",
-            message: "Wrong password",
-          },
-        ],
+        error: {
+          field: "password",
+          message: "Wrong password",
+        },
         account: null,
       };
     }
 
     return {
-      errors: [],
       account,
     };
   },
 
   // Delete Account
   isCurrentUser(user, pin, currentAccount) {
-    const errors = [];
     if (
       !user?.trim() ||
       !pin ||
       currentAccount.userName !== user ||
       pin !== currentAccount.pin
     ) {
-      errors.push("You can't delete! Account doesn't match");
+      return {
+        field: "close",
+        message: "You cannot delete. Try again later.",
+      };
     }
-
-    errors.filter(Boolean);
-    return errors;
   },
 };
