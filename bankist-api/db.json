@@ -1,0 +1,143 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "full_name": "Jonas Schmedtmann",
+      "transactions": [
+        {
+          "amount": 200,
+          "type": "deposit"
+        },
+        {
+          "amount": 400,
+          "type": "withdrawal"
+        },
+        {
+          "amount": 450,
+          "type": "withdrawal"
+        },
+        {
+          "amount": 750,
+          "type": "deposit"
+        },
+        {
+          "amount": 3000,
+          "type": "deposit"
+        },
+        {
+          "amount": 10,
+          "type": "withdrawal"
+        },
+        {
+          "amount": 90,
+          "type": "withdrawal"
+        },
+        {
+          "amount": 30,
+          "type": "withdrawal"
+        },
+        {
+          "amount": 70,
+          "type": "withdrawal"
+        },
+        {
+          "amount": 400,
+          "type": "withdrawal"
+        },
+        {
+          "amount": 500,
+          "type": "withdrawal"
+        },
+        {
+          "amount": 100,
+          "type": "withdrawal"
+        },
+        {
+          "amount": 600,
+          "type": "deposit"
+        },
+        {
+          "amount": 10000,
+          "type": "deposit"
+        },
+        {
+          "amount": 9000,
+          "type": "deposit"
+        },
+        {
+          "amount": 10000,
+          "type": "withdrawal"
+        },
+        {
+          "amount": 1500,
+          "type": "withdrawal"
+        }
+      ],
+      "interest_rate": 1.2,
+      "security_pin": 1111
+    },
+    {
+      "id": "2",
+      "full_name": "Jessica Davis",
+      "transactions": [
+        {
+          "amount": 200,
+          "type": "withdrawal"
+        },
+        {
+          "amount": 800,
+          "type": "deposit"
+        },
+        {
+          "amount": 10,
+          "type": "deposit"
+        },
+        {
+          "amount": 200,
+          "type": "withdrawal"
+        },
+        {
+          "amount": 30,
+          "type": "deposit"
+        },
+        {
+          "amount": 400,
+          "type": "deposit"
+        },
+        {
+          "amount": 40,
+          "type": "withdrawal"
+        },
+        {
+          "amount": 400,
+          "type": "deposit"
+        },
+        {
+          "amount": 10000,
+          "type": "deposit"
+        },
+        {
+          "amount": 1500,
+          "type": "deposit"
+        }
+      ],
+      "interest_rate": 1.5,
+      "security_pin": 2222
+    },
+    {
+      "full_name": "Maple Lwin",
+      "transactions": [],
+      "interest_rate": 1.2,
+      "security_pin": 3333,
+      "id": "lJErI4-"
+    },
+    {
+      "full_name": "Min Khi",
+      "transactions": [],
+      "interest_rate": 1.2,
+      "security_pin": 4444,
+      "id": "R5CnN90"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
