@@ -11,6 +11,48 @@ export const state = {
 };
 
 export const model = {
+  // Helper: normalize account
+  normalizeAccount(data) {
+    return {
+      id: data.id,
+      owner: String(data.full_name).trim(),
+      movements: (data.transactions ?? []).map((tc) =>
+        tc.type === "deposit"
+          ? { amount: Math.abs(tc.amount), type: "deposit" }
+          : { amount: -Math.abs(tc.amount), type: "withdrawal" },
+      ),
+      userName: createUserName(data.full_name),
+      interestRate: Number(data.interest_rate) || 0,
+      pin: Number(data.security_pin),
+    };
+  },
+
+  // Account Summary Helper
+  calculateBalance(movements) {
+    const sum = movements.reduce((acc, cur) => acc + cur.amount, 0);
+    return sum;
+  },
+
+  calculateDeposit(movements) {
+    return movements
+      .filter((mov) => mov.type === "deposit")
+      .reduce((acc, cur) => acc + cur.amount, 0);
+  },
+
+  calculateWithdraw(movements) {
+    return movements
+      .filter((mov) => mov.type === "withdrawal")
+      .reduce((acc, cur) => acc + cur.amount, 0);
+  },
+
+  calculateInterest(movements, interestRate) {
+    const deposit = movements
+      .filter((mov) => mov.type === "deposit")
+      .reduce((acc, cur) => acc + cur.amount, 0);
+
+    return (deposit * interestRate) / 100;
+  },
+
   async createUserData(formData) {
     const rawData = {
       full_name: formData.ownername,
@@ -25,39 +67,17 @@ export const model = {
       throw new Error("Cannot create user");
     }
 
-    const normalizeUser = {
-      id: newUser.id,
-      owner: String(newUser.full_name).trim(),
-      movements: (newUser.transactions ?? []).map((tc) =>
-        tc.type === "deposit"
-          ? { amount: Math.abs(tc.amount), type: "deposit" }
-          : { amount: -Math.abs(tc.amount), type: "withdrawal" },
-      ),
-      userName: createUserName(newUser.full_name),
-      interestRate: Number(newUser.interest_rate) || 0,
-      pin: Number(newUser.security_pin),
-    };
+    const normalizeUser = this.normalizeAccount(newUser);
 
     state.accounts.push(normalizeUser); // do not return this line >> this push method output array length
-    return normalizeUser;
+    return structuredClone(normalizeUser);
   },
 
   async getUserData() {
     const rawData = await api.getUsers();
     const users = normalizeApiData(rawData);
     const normalizeUsers = users.map((user) => {
-      return {
-        id: user.id,
-        owner: String(user.full_name).trim(),
-        movements: (user.transactions ?? []).map((tc) =>
-          tc.type === "deposit"
-            ? { amount: Math.abs(tc.amount), type: "deposit" }
-            : { amount: -Math.abs(tc.amount), type: "withdrawal" },
-        ),
-        userName: createUserName(user.full_name),
-        interestRate: Number(user.interest_rate) || 0,
-        pin: Number(user.security_pin),
-      };
+      return this.normalizeAccount(user);
     });
 
     state.accounts = normalizeUsers.map((account) => ({
@@ -105,6 +125,16 @@ export const model = {
     return updatedUser;
   },
 
+  getAccountSummary(account) {
+    const { movements, interestRate } = account;
+    return {
+      balance: this.calculateBalance(movements),
+      deposit: this.calculateDeposit(movements),
+      withdraw: this.calculateWithdraw(movements),
+      interest: this.calculateInterest(movements, interestRate),
+    };
+  },
+
   async deleteCurrentUser(id) {
     await api.deleteUser(id);
 
@@ -113,28 +143,7 @@ export const model = {
     return state.accounts;
   },
 
-  calculateBalance(movements) {
-    const sum = movements.reduce((acc, cur) => acc + cur.amount, 0);
-    return sum;
-  },
-
-  calculateTotalDeposit(movements) {
-    return movements
-      .filter((mov) => mov.type === "deposit")
-      .reduce((acc, cur) => acc + cur.amount, 0);
-  },
-
-  calculateTotalWithdraw(movements) {
-    return movements
-      .filter((mov) => mov.type === "withdrawal")
-      .reduce((acc, cur) => acc + cur.amount, 0);
-  },
-
   sorting(movements) {
     return [...movements].sort((a, b) => a.amount - b.amount);
-  },
-
-  calculateInterest(deposit, rate) {
-    return (deposit * rate) / 100;
   },
 };

@@ -135,20 +135,11 @@ export const view = {
     });
   },
 
-  showCurrentBalance(balance) {
-    UI.balance.value.textContent = `${balance} USD`;
-  },
-
-  showTotalDeposit(value) {
-    UI.summary.in.textContent = `${Math.abs(value)} USD`;
-  },
-
-  showTotalWithdraw(value) {
-    UI.summary.out.textContent = `${Math.abs(value)} USD`;
-  },
-
-  showInterest(value) {
-    UI.summary.interest.textContent = value;
+  renderSummary(summary) {
+    UI.balance.value.textContent = `${summary.balance} USD`;
+    UI.summary.in.textContent = `${Math.abs(summary.deposit)} USD`;
+    UI.summary.out.textContent = `${Math.abs(summary.withdraw)} USD`;
+    UI.summary.interest.textContent = summary.interest;
   },
 
   clearInput() {

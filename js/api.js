@@ -15,7 +15,7 @@ export const api = {
       return response.json();
     } catch (error) {
       console.error(error);
-      return [];
+      throw error;
     }
   },
 
@@ -28,7 +28,7 @@ export const api = {
       return response.json();
     } catch (error) {
       console.error(`Network Error: ${error.message}`);
-      return [];
+      throw error;
     }
   },
 

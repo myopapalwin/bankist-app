@@ -7,21 +7,8 @@ const controllerHelper = {
   updateUI(account) {
     view.showMovements(account.movements);
 
-    // calculating balance
-    const balance = model.calculateBalance(account.movements);
-    view.showCurrentBalance(balance);
-
-    // calculating deposit
-    const deposit = model.calculateTotalDeposit(account.movements);
-    view.showTotalDeposit(deposit);
-
-    // calculating withdraw
-    const withdraw = model.calculateTotalWithdraw(account.movements);
-    view.showTotalWithdraw(withdraw);
-
-    // calculating interest
-    const interest = model.calculateInterest(deposit, account.interestRate);
-    view.showInterest(interest);
+    const summary = model.getAccountSummary(account);
+    view.renderSummary(summary); // get total value
   },
 };
 
