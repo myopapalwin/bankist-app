@@ -113,7 +113,7 @@ export const accountController = {
       view.showLoading();
       const currentAcc = state.currentAccount;
       const loanAmt = Number(amt);
-      const deposit = model.calculateTotalDeposit(currentAcc.movements);
+      const deposit = model.calculateDeposit(currentAcc.movements);
 
       const error = validation.validateLoanMoney(deposit, loanAmt, currentAcc);
       console.log(error);

@@ -71,6 +71,10 @@
         {
           "amount": 1500,
           "type": "withdrawal"
+        },
+        {
+          "amount": 1111,
+          "type": "withdrawal"
         }
       ],
       "interest_rate": 1.2,
@@ -118,6 +122,10 @@
         },
         {
           "amount": 1500,
+          "type": "deposit"
+        },
+        {
+          "amount": 1111,
           "type": "deposit"
         }
       ],
