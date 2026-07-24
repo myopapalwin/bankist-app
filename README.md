@@ -10,6 +10,7 @@ This project was created to practice production-like frontend architecture befor
 
 ## Features
 
+- User Registration
 - User Login
 - Transfer Money
 - Loan Money
@@ -37,8 +38,10 @@ bankist-project/
 
 ├── bankist-app/
 │ ├── js/
+│ ├── css/
+│ ├── images/
 │ ├── index.html
-│ └── style.css
+
 │
 └── bankist-api/
 ├── db.json
