@@ -61,6 +61,9 @@ export const UI = {
     overlay: document.querySelector(".overlay"),
     error: document.querySelector(".error"),
   },
+  logout: {
+    link: document.querySelector(".logout"),
+  },
 };
 
 UI.movements.container.innerHTML = "";

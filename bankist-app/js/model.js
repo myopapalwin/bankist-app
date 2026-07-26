@@ -86,7 +86,7 @@ export const model = {
     return state.accounts;
   },
 
-  findAccount(userInputName) {
+  findAccountByUsername(userInputName) {
     const nmName = normalizeName(userInputName); // call
 
     // Find account with user name
@@ -104,6 +104,11 @@ export const model = {
     });
 
     return accWithOwnername;
+  },
+
+  findAccountByUserId(id) {
+    const user = state.accounts.find((acc) => acc.id === id);
+    return user;
   },
 
   transferMoney(sender, receiver, amt) {

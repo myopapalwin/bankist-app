@@ -1,6 +1,6 @@
 import { model, state } from "./model.js";
 import { view, UI } from "./view.js";
-import { normalizeName } from "./helper.js";
+import { normalizeName, auth } from "./helper.js";
 import { validation } from "./validation.js";
 
 const controllerHelper = {
@@ -36,7 +36,10 @@ export const accountController = {
       view.showLoading();
       state.sortState = false;
 
-      const result = validation.handleLogin(formData, model.findAccount);
+      const result = validation.handleLogin(
+        formData,
+        model.findAccountByUsername,
+      );
       // console.log(result);
 
       view.clearLoginError();
@@ -48,6 +51,9 @@ export const accountController = {
       }
 
       state.currentAccount = result.account;
+
+      // Store in memory
+      auth.saveUser(result.account);
 
       view.showSuccess(result.account);
 
@@ -78,7 +84,7 @@ export const accountController = {
         amount,
         sender,
         username,
-        model.findAccount,
+        model.findAccountByUsername,
         currentBalance,
       );
 
@@ -182,6 +188,16 @@ const init = async () => {
     const users = await model.getUserData();
     console.log(users);
 
+    const sessionUser = auth.loadUser();
+
+    if (!sessionUser) return;
+
+    const latestAccount = model.findAccountByUserId(sessionUser.id);
+    state.currentAccount = latestAccount;
+    controllerHelper.updateUI(latestAccount);
+    view.showSuccess(latestAccount);
+    view.showApp();
+
     UI.register.form.addEventListener("submit", function (e) {
       e.preventDefault();
 
@@ -227,6 +243,14 @@ const init = async () => {
     UI.modal.modalClose.addEventListener("click", function (e) {
       e.preventDefault();
       view.closeModal();
+    });
+
+    UI.logout.link.addEventListener("click", function (e) {
+      console.log("hi");
+      e.preventDefault();
+
+      auth.removeUser();
+      view.showLoggedOutState;
     });
   } catch (error) {
     console.error(error);
