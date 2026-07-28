@@ -153,7 +153,7 @@ export const accountController = {
     console.log(error);
 
     if (error) {
-      view.showModal(error);
+      view.showModal(error.message);
       return;
     }
 
@@ -176,11 +176,39 @@ export const accountController = {
     view.showMovements(sortResult);
     state.sortState = !state.sortState;
   },
+
+  logout() {
+    auth.removeUser();
+    state.currentAccount = null;
+    view.showLoggedOutState();
+  },
+
+  closeModal() {
+    view.closeModal();
+  },
 };
 
 // =========================
 // EVENT
 // =========================
+function bindEvents() {
+  view.bindRegister(accountController.createAccount);
+
+  view.bindLogin(accountController.login);
+
+  view.bindTransfer(accountController.transfer);
+
+  view.bindLoan(accountController.loan);
+
+  view.bindLogout(accountController.logout);
+
+  view.bindCloseAccount(accountController.closeAccount);
+
+  view.bindSorting(accountController.sortMovements);
+
+  view.bindCloseModal(accountController.closeModal);
+}
+
 const init = async () => {
   try {
     view.showLoading();
@@ -188,70 +216,17 @@ const init = async () => {
     const users = await model.getUserData();
     console.log(users);
 
+    bindEvents();
+
     const sessionUser = auth.loadUser();
 
-    if (!sessionUser) return;
-
-    const latestAccount = model.findAccountByUserId(sessionUser.id);
-    state.currentAccount = latestAccount;
-    controllerHelper.updateUI(latestAccount);
-    view.showSuccess(latestAccount);
-    view.showApp();
-
-    UI.register.form.addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      const formData = view.getRegisterFormData();
-      accountController.createAccount(formData);
-    });
-
-    UI.login.form.addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      const formData = view.getLoginFormData();
-      accountController.login(formData);
-    });
-
-    UI.transfer.form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const reciver = UI.transfer.to.value;
-      const amount = UI.transfer.amount.value;
-
-      accountController.transfer(reciver, amount);
-    });
-
-    UI.loan.form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const amount = UI.loan.amount.value;
-      accountController.loan(amount);
-    });
-
-    UI.close.form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const user = UI.close.user.value;
-      const pin = UI.close.pin.value;
-
-      accountController.closeAccount(user, pin);
-    });
-
-    UI.summary.btnSort.addEventListener("click", function (e) {
-      e.preventDefault();
-
-      accountController.sortMovements();
-    });
-
-    UI.modal.modalClose.addEventListener("click", function (e) {
-      e.preventDefault();
-      view.closeModal();
-    });
-
-    UI.logout.link.addEventListener("click", function (e) {
-      console.log("hi");
-      e.preventDefault();
-
-      auth.removeUser();
-      view.showLoggedOutState;
-    });
+    if (sessionUser) {
+      const latestAccount = model.findAccountByUserId(sessionUser.id);
+      state.currentAccount = latestAccount;
+      controllerHelper.updateUI(latestAccount);
+      view.showSuccess(latestAccount);
+      view.showApp();
+    }
   } catch (error) {
     console.error(error);
   } finally {
