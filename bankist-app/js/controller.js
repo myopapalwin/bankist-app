@@ -1,6 +1,6 @@
 import { model, state } from "./model.js";
 import { view, UI } from "./view.js";
-import { normalizeName } from "./helper.js";
+import { normalizeName, auth } from "./helper.js";
 import { validation } from "./validation.js";
 
 const controllerHelper = {
@@ -36,7 +36,10 @@ export const accountController = {
       view.showLoading();
       state.sortState = false;
 
-      const result = validation.handleLogin(formData, model.findAccount);
+      const result = validation.handleLogin(
+        formData,
+        model.findAccountByUsername,
+      );
       // console.log(result);
 
       view.clearLoginError();
@@ -48,6 +51,9 @@ export const accountController = {
       }
 
       state.currentAccount = result.account;
+
+      // Store in memory
+      auth.saveUser(result.account);
 
       view.showSuccess(result.account);
 
@@ -78,7 +84,7 @@ export const accountController = {
         amount,
         sender,
         username,
-        model.findAccount,
+        model.findAccountByUsername,
         currentBalance,
       );
 
@@ -147,7 +153,7 @@ export const accountController = {
     console.log(error);
 
     if (error) {
-      view.showModal(error);
+      view.showModal(error.message);
       return;
     }
 
@@ -170,11 +176,39 @@ export const accountController = {
     view.showMovements(sortResult);
     state.sortState = !state.sortState;
   },
+
+  logout() {
+    auth.removeUser();
+    state.currentAccount = null;
+    view.showLoggedOutState();
+  },
+
+  closeModal() {
+    view.closeModal();
+  },
 };
 
 // =========================
 // EVENT
 // =========================
+function bindEvents() {
+  view.bindRegister(accountController.createAccount);
+
+  view.bindLogin(accountController.login);
+
+  view.bindTransfer(accountController.transfer);
+
+  view.bindLoan(accountController.loan);
+
+  view.bindLogout(accountController.logout);
+
+  view.bindCloseAccount(accountController.closeAccount);
+
+  view.bindSorting(accountController.sortMovements);
+
+  view.bindCloseModal(accountController.closeModal);
+}
+
 const init = async () => {
   try {
     view.showLoading();
@@ -182,52 +216,17 @@ const init = async () => {
     const users = await model.getUserData();
     console.log(users);
 
-    UI.register.form.addEventListener("submit", function (e) {
-      e.preventDefault();
+    bindEvents();
 
-      const formData = view.getRegisterFormData();
-      accountController.createAccount(formData);
-    });
+    const sessionUser = auth.loadUser();
 
-    UI.login.form.addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      const formData = view.getLoginFormData();
-      accountController.login(formData);
-    });
-
-    UI.transfer.form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const reciver = UI.transfer.to.value;
-      const amount = UI.transfer.amount.value;
-
-      accountController.transfer(reciver, amount);
-    });
-
-    UI.loan.form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const amount = UI.loan.amount.value;
-      accountController.loan(amount);
-    });
-
-    UI.close.form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const user = UI.close.user.value;
-      const pin = UI.close.pin.value;
-
-      accountController.closeAccount(user, pin);
-    });
-
-    UI.summary.btnSort.addEventListener("click", function (e) {
-      e.preventDefault();
-
-      accountController.sortMovements();
-    });
-
-    UI.modal.modalClose.addEventListener("click", function (e) {
-      e.preventDefault();
-      view.closeModal();
-    });
+    if (sessionUser) {
+      const latestAccount = model.findAccountByUserId(sessionUser.id);
+      state.currentAccount = latestAccount;
+      controllerHelper.updateUI(latestAccount);
+      view.showSuccess(latestAccount);
+      view.showApp();
+    }
   } catch (error) {
     console.error(error);
   } finally {

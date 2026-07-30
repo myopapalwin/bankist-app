@@ -61,15 +61,19 @@ export const UI = {
     overlay: document.querySelector(".overlay"),
     error: document.querySelector(".error"),
   },
+  logout: {
+    button: document.querySelector(".logout"),
+  },
 };
 
 UI.movements.container.innerHTML = "";
 
 export const view = {
   showApp() {
-    // UI.app.container.style.opacity = 100;
     UI.app.container.classList.remove("hidden");
     UI.register.container.classList.add("hidden");
+    UI.login.form.classList.add("hidden");
+    UI.logout.button.classList.remove("hidden");
   },
 
   showLoading() {
@@ -163,14 +167,16 @@ export const view = {
 
   showLoggedOutState() {
     UI.slogan.welcome.textContent = `Login to get started`;
-    UI.movements.container.innerHTML = "";
-    UI.register.container.innerHTML = "";
+    // UI.movements.container.innerHTML = "";
+    // UI.register.container.innerHTML = "";
     UI.balance.value.textContent = `0 USD`;
     UI.summary.in.textContent = `0 USD`;
     UI.summary.out.textContent = `0 USD`;
     UI.summary.interest.textContent = `0 USD`;
     UI.app.container.classList.add("hidden");
-    // UI.app.container.style.opacity = 0;
+    UI.register.container.classList.remove("hidden");
+    UI.login.form.classList.remove("hidden");
+    UI.logout.button.classList.add("hidden");
   },
 
   getRegisterFormData() {
@@ -187,5 +193,67 @@ export const view = {
       username: UI.login.user.value,
       password: UI.login.pin.value,
     };
+  },
+
+  // Events
+  bindRegister(handler) {
+    UI.register.form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      handler(this.getRegisterFormData());
+    });
+  },
+  bindLogin(handler) {
+    UI.login.form.addEventListener("submit", (e) => {
+      console.log("Login click");
+      e.preventDefault();
+
+      handler(this.getLoginFormData());
+    });
+  },
+  bindLogout(handler) {
+    UI.logout.button.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      handler();
+    });
+  },
+  bindTransfer(handler) {
+    UI.transfer.form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const reciver = UI.transfer.to.value;
+      const amount = UI.transfer.amount.value;
+
+      handler(reciver, amount);
+    });
+  },
+  bindLoan(handler) {
+    UI.loan.form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const amount = UI.loan.amount.value;
+      handler(amount);
+    });
+  },
+  bindCloseAccount(handler) {
+    UI.close.form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const user = UI.close.user.value;
+      const pin = UI.close.pin.value;
+
+      handler(user, pin);
+    });
+  },
+  bindSorting(handler) {
+    UI.summary.btnSort.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      handler();
+    });
+  },
+  bindCloseModal(handler) {
+    UI.modal.modalClose.addEventListener("click", (e) => {
+      e.preventDefault();
+      handler();
+    });
   },
 };

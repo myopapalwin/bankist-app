@@ -15,3 +15,21 @@ export const createUserName = (name) => {
     .map((n) => n[0])
     .join("");
 };
+
+// Auth
+const STORAGE_KEY = "account";
+
+export const auth = {
+  saveUser(account) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ id: account.id }));
+  },
+
+  loadUser() {
+    const currentUser = localStorage.getItem(STORAGE_KEY);
+    return JSON.parse(currentUser);
+  },
+
+  removeUser() {
+    localStorage.removeItem(STORAGE_KEY);
+  },
+};
