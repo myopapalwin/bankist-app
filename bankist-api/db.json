@@ -75,6 +75,18 @@
         {
           "amount": 1111,
           "type": "withdrawal"
+        },
+        {
+          "amount": 811,
+          "type": "deposit"
+        },
+        {
+          "amount": 700,
+          "type": "withdrawal"
+        },
+        {
+          "amount": 1000,
+          "type": "withdrawal"
         }
       ],
       "interest_rate": 1.2,
@@ -127,6 +139,18 @@
         {
           "amount": 1111,
           "type": "deposit"
+        },
+        {
+          "amount": 811,
+          "type": "withdrawal"
+        },
+        {
+          "amount": 2000,
+          "type": "deposit"
+        },
+        {
+          "amount": 1000,
+          "type": "deposit"
         }
       ],
       "interest_rate": 1.5,
@@ -134,17 +158,42 @@
     },
     {
       "full_name": "Maple Lwin",
-      "transactions": [],
+      "transactions": [
+        {
+          "amount": 700,
+          "type": "deposit"
+        },
+        {
+          "amount": 500,
+          "type": "deposit"
+        },
+        {
+          "amount": 200,
+          "type": "withdrawal"
+        }
+      ],
       "interest_rate": 1.2,
       "security_pin": 3333,
       "id": "lJErI4-"
     },
     {
       "full_name": "Min Khi",
-      "transactions": [],
+      "transactions": [
+        {
+          "amount": 200,
+          "type": "deposit"
+        }
+      ],
       "interest_rate": 1.2,
       "security_pin": 4444,
       "id": "R5CnN90"
+    },
+    {
+      "full_name": "Ok Kar",
+      "transactions": [],
+      "interest_rate": 1.2,
+      "security_pin": 5555,
+      "id": "piKEIsE"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
