@@ -47,7 +47,6 @@
           id="register__ownername"
           placeholder="Enter owner name"
           class="login__input"
-          style="width: 30rem"
         />
         <small data-error="ownername"></small>
 
@@ -55,7 +54,6 @@
           type="password"
           id="register__password"
           placeholder="Enter Password"
-          style="width: 30rem"
           class="login__input"
         />
         <small data-error="password"></small>
@@ -64,12 +62,19 @@
           type="password"
           id="register__confirm_password"
           placeholder="Enter Confirm Password"
-          style="width: 30rem"
           class="login__input"
         />
         <small data-error="confirmPass"></small>
 
-        <label for="">Interest Rate: </label>
+        <input
+          type="number"
+          id="register__balance"
+          placeholder="Initial Balance"
+          class="login__input"
+        />
+        <small data-error="balance"></small>
+
+        <label>Interest Rate: </label>
         <select
           name="interest-rate"
           id="register__input_rate"
@@ -81,7 +86,9 @@
         </select>
         <small data-error="rate"></small>
 
-        <button class="register__btn">Register</button>
+        <button class="register__btn" style="width: 30rem; margin-top: 5px">
+          Register
+        </button>
       </form>
     </div>
 

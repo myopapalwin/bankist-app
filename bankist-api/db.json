@@ -75,6 +75,18 @@
         {
           "amount": 1111,
           "type": "withdrawal"
+        },
+        {
+          "amount": 1,
+          "type": "deposit"
+        },
+        {
+          "amount": 10,
+          "type": "deposit"
+        },
+        {
+          "amount": 100,
+          "type": "deposit"
         }
       ],
       "interest_rate": 1.2,
@@ -133,18 +145,60 @@
       "security_pin": 2222
     },
     {
-      "full_name": "Maple Lwin",
-      "transactions": [],
-      "interest_rate": 1.2,
-      "security_pin": 3333,
-      "id": "lJErI4-"
-    },
-    {
-      "full_name": "Min Khi",
-      "transactions": [],
+      "full_name": "Min Khit",
+      "transactions": [
+        {
+          "amount": 2000,
+          "type": "deposit"
+        }
+      ],
       "interest_rate": 1.2,
       "security_pin": 4444,
       "id": "R5CnN90"
+    },
+    {
+      "full_name": "Kyaw Kyaw",
+      "transactions": [
+        {
+          "amount": 7000,
+          "type": "deposit"
+        },
+        {
+          "amount": 3000,
+          "type": "deposit"
+        },
+        {
+          "amount": 2000,
+          "type": "withdrawal"
+        }
+      ],
+      "interest_rate": 1.5,
+      "security_pin": 7777,
+      "id": "8xMTtg9"
+    },
+    {
+      "full_name": "Swe Mar",
+      "transactions": [
+        {
+          "amount": 2200,
+          "type": "deposit"
+        }
+      ],
+      "interest_rate": 1.2,
+      "security_pin": 9999,
+      "id": "sE9EsaF"
+    },
+    {
+      "full_name": "Oh Oh",
+      "transactions": [
+        {
+          "amount": 3000,
+          "type": "deposit"
+        }
+      ],
+      "interest_rate": 1.2,
+      "security_pin": 0,
+      "id": "jM_yjEq"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

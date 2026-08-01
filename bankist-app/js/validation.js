@@ -121,6 +121,22 @@ export const validation = {
     if (matchPassword) return matchPassword;
   },
 
+  validateBalance(balance) {
+    const requiredError = validation.validateRequired(
+      balance,
+      "balance",
+      "Please enter initial balance.",
+    );
+    if (requiredError) return requiredError;
+
+    if (balance <= 0) {
+      return {
+        field: "balance",
+        message: "Please input valid balance",
+      };
+    }
+  },
+
   // Loan
   validateLoanMoney(deposit, loanAmt, acc) {
     if (!Number.isFinite(loanAmt) || loanAmt <= 0) {
@@ -203,6 +219,7 @@ export const validation = {
       validation.validateOwnerName(formData.ownername),
       validation.validatePassword(formData.password),
       validation.validateConfirmPass(formData.confirmPass, formData.password),
+      validation.validateBalance(formData.balance),
     ].filter(Boolean);
 
     return errors;
