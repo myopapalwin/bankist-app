@@ -27,6 +27,7 @@ export const UI = {
     ownername: document.getElementById("register__ownername"),
     password: document.getElementById("register__password"),
     confirmPass: document.getElementById("register__confirm_password"),
+    balance: document.getElementById("register__balance"),
     rate: document.getElementById("register__input_rate"),
   },
   login: {
@@ -184,6 +185,7 @@ export const view = {
       ownername: UI.register.ownername.value,
       password: UI.register.password.value,
       confirmPass: UI.register.confirmPass.value,
+      balance: UI.register.balance.value,
       rate: UI.register.rate.value,
     };
   },

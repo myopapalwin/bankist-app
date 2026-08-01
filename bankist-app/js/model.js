@@ -54,9 +54,15 @@ export const model = {
   },
 
   async createUserData(formData) {
+    console.log(formData.balance);
     const rawData = {
       full_name: formData.ownername,
-      transactions: [],
+      transactions: [
+        {
+          amount: Number(formData.balance),
+          type: "deposit",
+        },
+      ],
       interest_rate: Number(formData.rate),
       security_pin: Number(formData.password),
     };
