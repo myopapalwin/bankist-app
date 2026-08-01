@@ -104,6 +104,11 @@ nav {
   justify-content: space-evenly;
   height: 200px;
 }
+.register_form input,
+.register_form select {
+  width: 30rem;
+  margin-top: 5px;
+}
 
 /* MODEL BOX */
 

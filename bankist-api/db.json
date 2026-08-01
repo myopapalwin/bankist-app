@@ -145,14 +145,7 @@
       "security_pin": 2222
     },
     {
-      "full_name": "Maple Lwin",
-      "transactions": [],
-      "interest_rate": 1.2,
-      "security_pin": 3333,
-      "id": "lJErI4-"
-    },
-    {
-      "full_name": "Min Khi",
+      "full_name": "Min Khit",
       "transactions": [
         {
           "amount": 2000,
@@ -162,15 +155,6 @@
       "interest_rate": 1.2,
       "security_pin": 4444,
       "id": "R5CnN90"
-    },
-    {
-      "full_name": "Maung Maung",
-      "transactions": [
-        5000
-      ],
-      "interest_rate": 1.3,
-      "security_pin": 4444,
-      "id": "n2s8NOO"
     },
     {
       "full_name": "Kyaw Kyaw",
@@ -193,30 +177,6 @@
       "id": "8xMTtg9"
     },
     {
-      "full_name": "Aye Thwe",
-      "transactions": [
-        {
-          "amount": 0,
-          "type": "deposit"
-        }
-      ],
-      "interest_rate": 1.2,
-      "security_pin": 6666,
-      "id": "DZ98Wwv"
-    },
-    {
-      "full_name": "Mg Zaw",
-      "transactions": [
-        {
-          "amount": -5000,
-          "type": "deposit"
-        }
-      ],
-      "interest_rate": 1.2,
-      "security_pin": 8888,
-      "id": "-4aXV9y"
-    },
-    {
       "full_name": "Swe Mar",
       "transactions": [
         {
@@ -227,18 +187,6 @@
       "interest_rate": 1.2,
       "security_pin": 9999,
       "id": "sE9EsaF"
-    },
-    {
-      "full_name": "Moe Swe",
-      "transactions": [
-        {
-          "amount": 0,
-          "type": "deposit"
-        }
-      ],
-      "interest_rate": 1.2,
-      "security_pin": 0,
-      "id": "TP7obfD"
     },
     {
       "full_name": "Oh Oh",

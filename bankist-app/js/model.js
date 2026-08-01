@@ -54,7 +54,6 @@ export const model = {
   },
 
   async createUserData(formData) {
-    console.log(formData.balance);
     const rawData = {
       full_name: formData.ownername,
       transactions: [
