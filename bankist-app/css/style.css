@@ -106,8 +106,11 @@ nav {
 }
 .register_form input,
 .register_form select {
-  width: 30rem;
+  width: 41.5rem;
   margin-top: 5px;
+}
+.register_form input.half {
+  width: 20rem !important;
 }
 
 /* MODEL BOX */

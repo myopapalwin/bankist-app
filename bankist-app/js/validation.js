@@ -47,27 +47,52 @@ export const validation = {
   },
 
   // Register helper
-  validateOwnerName(name) {
+  validateFirstName(name) {
     const requiredError = validation.validateRequired(
       name,
-      "ownername",
-      "Please enter owner name",
+      "firstName",
+      "Please Enter Your First Name.",
     );
     if (requiredError) return requiredError;
 
     const minLengthError = validation.validateMinLength(
       name,
       3,
-      "ownername",
-      "Owner name must not less than 3 characters.",
+      "firstName",
+      "First name must not less than 3 characters.",
     );
     if (minLengthError) return minLengthError;
 
     const maxLengthError = validation.validateMaxLength(
       name,
       15,
-      "ownername",
-      "Owner name must not exceed than 20 characters.",
+      "firstName",
+      "First name must not exceed than 20 characters.",
+    );
+    if (maxLengthError) return maxLengthError;
+  },
+
+  validateLastName(name) {
+    const requiredError = validation.validateRequired(
+      name,
+      "lastName",
+      "Please Enter Your Last Name.",
+    );
+    if (requiredError) return requiredError;
+
+    const minLengthError = validation.validateMinLength(
+      name,
+      3,
+      "lastName",
+      "Last name must not less than 3 characters.",
+    );
+    if (minLengthError) return minLengthError;
+
+    const maxLengthError = validation.validateMaxLength(
+      name,
+      15,
+      "lastName",
+      "Last name must not exceed than 20 characters.",
     );
     if (maxLengthError) return maxLengthError;
   },
@@ -216,7 +241,8 @@ export const validation = {
   // Register Form
   handleRegister(formData) {
     const errors = [
-      validation.validateOwnerName(formData.ownername),
+      validation.validateFirstName(formData.firstName),
+      validation.validateLastName(formData.lastName),
       validation.validatePassword(formData.password),
       validation.validateConfirmPass(formData.confirmPass, formData.password),
       validation.validateBalance(formData.balance),

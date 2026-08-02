@@ -55,7 +55,7 @@ export const model = {
 
   async createUserData(formData) {
     const rawData = {
-      full_name: formData.ownername,
+      full_name: `${formData.firstName}${formData.lastName}`,
       transactions: [
         {
           amount: Number(formData.balance),
