@@ -24,7 +24,6 @@ export const UI = {
   register: {
     container: document.querySelector(".register"),
     form: document.querySelector(".register_form"),
-    // ownername: document.getElementById("register__ownername"),
     firstName: document.getElementById("register__firstname"),
     lastName: document.getElementById("register__lastname"),
     password: document.getElementById("register__password"),
@@ -170,8 +169,6 @@ export const view = {
 
   showLoggedOutState() {
     UI.slogan.welcome.textContent = `Login to get started`;
-    // UI.movements.container.innerHTML = "";
-    // UI.register.container.innerHTML = "";
     UI.balance.value.textContent = `0 USD`;
     UI.summary.in.textContent = `0 USD`;
     UI.summary.out.textContent = `0 USD`;
@@ -186,7 +183,6 @@ export const view = {
     return {
       firstName: UI.register.firstName.value,
       lastName: UI.register.lastName.value,
-      // ownername: UI.register.ownername.value,
       password: UI.register.password.value,
       confirmPass: UI.register.confirmPass.value,
       balance: UI.register.balance.value,
