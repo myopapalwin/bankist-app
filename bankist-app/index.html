@@ -42,13 +42,29 @@
       <p class="notic">If you don't have an account, register first.</p>
       <h2 class="register-title">Register Form</h2>
       <form class="register_form" id="register__form" name="">
-        <input
+        <div>
+          <input
+            type="text"
+            id="register__firstname"
+            placeholder="First Name"
+            class="login__input half"
+          />
+          <small data-error="firstName"></small>
+          <input
+            type="text"
+            id="register__lastname"
+            placeholder="Last Name"
+            class="login__input half"
+          />
+          <small data-error="lastName"></small>
+        </div>
+        <!-- <input
           type="text"
           id="register__ownername"
           placeholder="Enter owner name"
           class="login__input"
-        />
-        <small data-error="ownername"></small>
+        /> -->
+        <!-- <small data-error="ownername"></small> -->
 
         <input
           type="password"

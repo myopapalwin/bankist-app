@@ -24,7 +24,9 @@ export const UI = {
   register: {
     container: document.querySelector(".register"),
     form: document.querySelector(".register_form"),
-    ownername: document.getElementById("register__ownername"),
+    // ownername: document.getElementById("register__ownername"),
+    firstName: document.getElementById("register__firstname"),
+    lastName: document.getElementById("register__lastname"),
     password: document.getElementById("register__password"),
     confirmPass: document.getElementById("register__confirm_password"),
     balance: document.getElementById("register__balance"),
@@ -182,7 +184,9 @@ export const view = {
 
   getRegisterFormData() {
     return {
-      ownername: UI.register.ownername.value,
+      firstName: UI.register.firstName.value,
+      lastName: UI.register.lastName.value,
+      // ownername: UI.register.ownername.value,
       password: UI.register.password.value,
       confirmPass: UI.register.confirmPass.value,
       balance: UI.register.balance.value,

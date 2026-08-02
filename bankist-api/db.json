@@ -145,7 +145,14 @@
       "security_pin": 2222
     },
     {
-      "full_name": "Min Khit",
+      "full_name": "Maple Lwin",
+      "transactions": [],
+      "interest_rate": 1.2,
+      "security_pin": 3333,
+      "id": "lJErI4-"
+    },
+    {
+      "full_name": "Min Khi",
       "transactions": [
         {
           "amount": 2000,
@@ -155,6 +162,15 @@
       "interest_rate": 1.2,
       "security_pin": 4444,
       "id": "R5CnN90"
+    },
+    {
+      "full_name": "Maung Maung",
+      "transactions": [
+        5000
+      ],
+      "interest_rate": 1.3,
+      "security_pin": 4444,
+      "id": "n2s8NOO"
     },
     {
       "full_name": "Kyaw Kyaw",
@@ -177,28 +193,28 @@
       "id": "8xMTtg9"
     },
     {
-      "full_name": "Swe Mar",
+      "full_name": "undefined undefined",
       "transactions": [
         {
-          "amount": 2200,
+          "amount": 5555,
           "type": "deposit"
         }
       ],
       "interest_rate": 1.2,
-      "security_pin": 9999,
-      "id": "sE9EsaF"
+      "security_pin": 5555,
+      "id": "Mv4Pve3"
     },
     {
-      "full_name": "Oh Oh",
+      "full_name": "May  Oo",
       "transactions": [
         {
-          "amount": 3000,
+          "amount": 2222,
           "type": "deposit"
         }
       ],
       "interest_rate": 1.2,
-      "security_pin": 0,
-      "id": "jM_yjEq"
+      "security_pin": 2222,
+      "id": "w11Ak8E"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
