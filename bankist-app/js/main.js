@@ -1,3 +1,3 @@
 "use strict";
 
-import "./controller.js";
+import "./controllers/loginController.js";

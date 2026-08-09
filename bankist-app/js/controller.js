@@ -31,44 +31,43 @@ export const accountController = {
     }
   },
 
-  login(formData) {
-    try {
-      view.showLoading();
-      state.sortState = false;
+  // login(formData) {
+  //   try {
+  //     view.showLoading();
+  //     state.sortState = false;
 
-      const result = validation.handleLogin(
-        formData,
-        model.findAccountByUsername,
-      );
-      // console.log(result);
+  //     const result = validation.handleLogin(
+  //       formData,
+  //       model.findAccountByUsername,
+  //     );
 
-      view.clearLoginError();
+  //     view.clearLoginError();
 
-      if (result.error) {
-        view.showLoggedOutState();
-        view.showLoginError(result.error);
-        return; // !important
-      }
+  //     if (result.error) {
+  //       view.showLoggedOutState();
+  //       view.showLoginError(result.error);
+  //       return; // !important
+  //     }
 
-      state.currentAccount = result.account;
+  //     state.currentAccount = result.account;
 
-      // Store in memory
-      auth.saveUser(result.account);
+  //     // Store in memory
+  //     auth.saveUser(result.account);
 
-      view.showSuccess(result.account);
+  //     view.showSuccess(result.account);
 
-      // Update UI
-      controllerHelper.updateUI(result.account);
+  //     // Update UI
+  //     controllerHelper.updateUI(result.account);
 
-      view.showApp();
+  //     view.showApp();
 
-      view.clearInput();
-    } catch (error) {
-      console.error(error);
-    } finally {
-      view.hideLoading();
-    }
-  },
+  //     view.clearLoginInput();
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     view.hideLoading();
+  //   }
+  // },
 
   async transfer(username, amt) {
     try {
@@ -194,7 +193,7 @@ export const accountController = {
 function bindEvents() {
   view.bindRegister(accountController.createAccount);
 
-  view.bindLogin(accountController.login);
+  // view.bindLogin(accountController.login);
 
   view.bindTransfer(accountController.transfer);
 
@@ -213,7 +212,7 @@ const init = async () => {
   try {
     view.showLoading();
 
-    const users = await model.getUserData();
+    const users = await model.loadUsers();
     console.log(users);
 
     bindEvents();

@@ -252,45 +252,23 @@ export const validation = {
   },
 
   // Login Form
-  handleLogin(formData, findAccountFn) {
+  validateLogin(formData) {
     const { username, password } = formData;
+    const requiredUser = this.validateRequired(
+      username,
+      "username",
+      "Please enter user name.",
+    );
 
-    if (!username.trim() || !password.trim()) {
-      return {
-        error: {
-          field: "login",
-          message: "Enter user name and password.",
-        },
+    const requiredPass = this.validateRequired(
+      password,
+      "password",
+      "Please enter password.",
+    );
 
-        account: null,
-      };
-    }
+    const errors = [requiredUser, requiredPass].filter(Boolean);
 
-    const account = findAccountFn(username);
-
-    if (!account) {
-      return {
-        error: {
-          field: "username",
-          message: "User not found.",
-        },
-        account: null,
-      };
-    }
-
-    if (Number(password) !== account.pin) {
-      return {
-        error: {
-          field: "password",
-          message: "Wrong password",
-        },
-        account: null,
-      };
-    }
-
-    return {
-      account,
-    };
+    return errors;
   },
 
   // Delete Account

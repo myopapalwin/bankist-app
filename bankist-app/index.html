@@ -4,196 +4,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="shortcut icon" type="image/png" href="./images/icon.png" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
 
     <link
       href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap"
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/style-new.css" />
     <title>Bankist</title>
   </head>
   <body>
     <!-- TOP NAVIGATION -->
-    <nav>
-      <img src="./images/logo.png" alt="Logo" class="logo" />
-      <p class="welcome">Log in to get started</p>
-      <form class="login">
-        <input
-          type="text"
-          placeholder="user"
-          class="login__input login__input--user"
-        />
-        <!-- In practice, use type="password" -->
-        <input
-          type="text"
-          placeholder="PIN"
-          maxlength="4"
-          class="login__input login__input--pin"
-        />
-        <button class="login__btn">&rarr;</button>
-      </form>
-      <div class="logout hidden">
-        <button type="submit">Logout</button>
+    <nav class="navbar bg-body-tertiary">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <img src="./images/logo.png" alt="Logo" class="logo" />
+          Bankist App
+        </a>
       </div>
     </nav>
 
-    <div class="register">
-      <p class="notic">If you don't have an account, register first.</p>
-      <h2 class="register-title">Register Form</h2>
-      <form class="register_form" id="register__form" name="">
-        <div>
+    <div class="login-container">
+      <form class="login-form">
+        <h2>Log in to get started</h2>
+        <br />
+        <div class="form-floating mb-3">
           <input
             type="text"
-            id="register__firstname"
-            placeholder="First Name"
-            class="login__input half"
+            class="form-control login__input--user"
+            id="username"
+            placeholder="User name"
           />
-          <small data-error="firstName"></small>
-          <input
-            type="text"
-            id="register__lastname"
-            placeholder="Last Name"
-            class="login__input half"
-          />
-          <small data-error="lastName"></small>
+          <label for="floatingInput">User name</label>
+          <small data-error="username"></small>
         </div>
-
-        <input
-          type="password"
-          id="register__password"
-          placeholder="Enter Password"
-          class="login__input"
-        />
-        <small data-error="password"></small>
-
-        <input
-          type="password"
-          id="register__confirm_password"
-          placeholder="Enter Confirm Password"
-          class="login__input"
-        />
-        <small data-error="confirmPass"></small>
-
-        <input
-          type="number"
-          id="register__balance"
-          placeholder="Initial Balance"
-          class="login__input"
-        />
-        <small data-error="balance"></small>
-
-        <label>Interest Rate: </label>
-        <select
-          name="interest-rate"
-          id="register__input_rate"
-          class="login__input"
-        >
-          <option value="1.2">1.2</option>
-          <option value="1.3">1.3</option>
-          <option value="1.5">1.5</option>
-        </select>
-        <small data-error="rate"></small>
-
-        <button class="register__btn" style="width: 30rem; margin-top: 5px">
-          Register
-        </button>
-      </form>
-    </div>
-
-    <main class="app hidden">
-      <div class="spinner hidden">Loading...</div>
-
-      <!-- BALANCE -->
-      <div class="balance">
-        <div>
-          <p class="balance__label">Current balance</p>
-          <p class="balance__date">
-            As of <span class="date">05/03/2037</span>
-          </p>
-        </div>
-        <p class="balance__value">0000 USD</p>
-      </div>
-
-      <!-- MOVEMENTS -->
-      <div class="movements">
-        <div class="movements__row">
-          <div class="movements__type movements__type--deposit">2 deposit</div>
-          <div class="movements__date">3 days ago</div>
-          <div class="movements__value">4 000€</div>
-        </div>
-        <div class="movements__row">
-          <div class="movements__type movements__type--withdrawal">
-            1 withdrawal
-          </div>
-          <div class="movements__date">24/01/2037</div>
-          <div class="movements__value">-378€</div>
-        </div>
-      </div>
-
-      <!-- SUMMARY -->
-      <div class="summary">
-        <p class="summary__label">In</p>
-        <p class="summary__value summary__value--in">0000 USD</p>
-        <p class="summary__label">Out</p>
-        <p class="summary__value summary__value--out">0000 USD</p>
-        <p class="summary__label">Interest</p>
-        <p class="summary__value summary__value--interest">0000 USD</p>
-        <button class="btn--sort">&downarrow; SORT</button>
-      </div>
-
-      <!-- OPERATION: TRANSFERS -->
-      <div class="operation operation--transfer">
-        <h2>Transfer money</h2>
-        <form class="form form--transfer">
-          <input type="text" class="form__input form__input--to" />
-          <input type="number" class="form__input form__input--amount" />
-          <button class="form__btn form__btn--transfer">&rarr;</button>
-          <label class="form__label">Transfer to</label>
-          <label class="form__label">Amount</label>
-        </form>
-      </div>
-
-      <!-- OPERATION: LOAN -->
-      <div class="operation operation--loan">
-        <h2>Request loan</h2>
-        <form class="form form--loan">
-          <input type="number" class="form__input form__input--loan-amount" />
-          <button class="form__btn form__btn--loan">&rarr;</button>
-          <label class="form__label form__label--loan">Amount</label>
-        </form>
-      </div>
-
-      <!-- OPERATION: CLOSE -->
-      <div class="operation operation--close">
-        <h2>Close account</h2>
-        <form class="form form--close">
-          <input type="text" class="form__input form__input--user" />
+        <div class="form-floating">
           <input
             type="password"
-            maxlength="6"
-            class="form__input form__input--pin"
+            class="form-control login__input--pin"
+            id="password"
+            placeholder="Password"
           />
-          <button class="form__btn form__btn--close">&rarr;</button>
-          <label class="form__label">Confirm user</label>
-          <label class="form__label">Confirm PIN</label>
-        </form>
+          <label for="floatingPassword">Password</label>
+          <small data-error="password"></small>
+        </div>
+        <button class="btn btn-primary login__btn">Login</button>
+      </form>
+      <div class="alert alert-light" role="alert">
+        You haven't account yet?
+        <a href="register.html" class="alert-link"> Register Now</a>
       </div>
-
-      <!-- LOGOUT TIMER -->
-      <p class="logout-timer">
-        You will be logged out in <span class="timer">05:00</span>
-      </p>
-    </main>
-
-    <div class="modal hidden">
-      <button class="close-modal">&times;</button>
-      <h2 class="error">I'm a modal window 😍</h2>
     </div>
-    <div class="overlay hidden"></div>
-
-    <!-- <footer>&copy; by Jonas Schmedtmann. Don't claim as your own :)</footer> -->
 
     <script type="module" src="./js/main.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

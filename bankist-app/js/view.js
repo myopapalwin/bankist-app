@@ -31,12 +31,12 @@ export const UI = {
     balance: document.getElementById("register__balance"),
     rate: document.getElementById("register__input_rate"),
   },
-  login: {
-    form: document.querySelector(".login"),
-    user: document.querySelector(".login__input--user"),
-    pin: document.querySelector(".login__input--pin"),
-    btn: document.querySelector(".login__btn"),
-  },
+  // login: {
+  //   form: document.querySelector(".login-form"),
+  //   user: document.querySelector(".login__input--user"),
+  //   pin: document.querySelector(".login__input--pin"),
+  //   btn: document.querySelector(".login__btn"),
+  // },
   transfer: {
     form: document.querySelector(".form--transfer"),
     to: document.querySelector(".form__input--to"),
@@ -78,33 +78,33 @@ export const view = {
     UI.logout.button.classList.remove("hidden");
   },
 
-  showLoading() {
-    UI.loading.container.classList.remove("hidden");
-  },
+  // showLoading() {
+  //   UI.loading.container.classList.remove("hidden");
+  // },
 
-  hideLoading() {
-    UI.loading.container.classList.add("hidden");
-  },
+  // hideLoading() {
+  //   UI.loading.container.classList.add("hidden");
+  // },
 
   showSuccess(account) {
     UI.slogan.welcome.textContent = `Welcome back, ${account.owner}`;
     UI.app.container.classList.remove("hidden");
   },
 
-  showLoginError(error) {
-    UI.slogan.welcome.textContent = `${error.message}`;
-  },
+  // showLoginError(error) {
+  //   UI.slogan.welcome.textContent = `${error.message}`;
+  // },
 
-  clearLoginError() {
-    UI.slogan.welcome.textContent = "";
-  },
+  // clearLoginError() {
+  //   UI.slogan.welcome.textContent = "";
+  // },
 
-  renderErrors(errors) {
-    errors.forEach((error) => {
-      document.querySelector(`[data-error="${error.field}"]`).textContent =
-        error.message;
-    });
-  },
+  // renderErrors(errors) {
+  //   errors.forEach((error) => {
+  //     document.querySelector(`[data-error="${error.field}"]`).textContent =
+  //       error.message;
+  //   });
+  // },
 
   clearRegisterErrors() {
     document.querySelectorAll("[data-error]").forEach((el) => {
@@ -148,7 +148,7 @@ export const view = {
     UI.summary.interest.textContent = summary.interest;
   },
 
-  clearInput() {
+  clearLoginInput() {
     UI.login.user.value = "";
     UI.login.pin.value = "";
   },
@@ -190,12 +190,12 @@ export const view = {
     };
   },
 
-  getLoginFormData() {
-    return {
-      username: UI.login.user.value,
-      password: UI.login.pin.value,
-    };
-  },
+  // getLoginFormData() {
+  //   return {
+  //     username: UI.login.user.value,
+  //     password: UI.login.pin.value,
+  //   };
+  // },
 
   // Events
   bindRegister(handler) {
@@ -205,14 +205,14 @@ export const view = {
       handler(this.getRegisterFormData());
     });
   },
-  bindLogin(handler) {
-    UI.login.form.addEventListener("submit", (e) => {
-      console.log("Login click");
-      e.preventDefault();
+  // bindLogin(handler) {
+  //   UI.login.form.addEventListener("submit", (e) => {
+  //     console.log("Login click");
+  //     e.preventDefault();
 
-      handler(this.getLoginFormData());
-    });
-  },
+  //     handler(this.getLoginFormData());
+  //   });
+  // },
   bindLogout(handler) {
     UI.logout.button.addEventListener("click", (e) => {
       e.preventDefault();
