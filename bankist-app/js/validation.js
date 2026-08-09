@@ -270,46 +270,6 @@ export const validation = {
 
     return errors;
   },
-  // handleLogin(formData, findAccountFn) {
-  //   const { username, password } = formData;
-
-  //   if (!username.trim() || !password.trim()) {
-  //     return {
-  //       error: {
-  //         field: "login",
-  //         message: "Enter user name and password.",
-  //       },
-
-  //       account: null,
-  //     };
-  //   }
-
-  //   const account = findAccountFn(username);
-
-  //   if (!account) {
-  //     return {
-  //       error: {
-  //         field: "username",
-  //         message: "User not found.",
-  //       },
-  //       account: null,
-  //     };
-  //   }
-
-  //   if (Number(password) !== account.pin) {
-  //     return {
-  //       error: {
-  //         field: "password",
-  //         message: "Wrong password",
-  //       },
-  //       account: null,
-  //     };
-  //   }
-
-  //   return {
-  //     account,
-  //   };
-  // },
 
   // Delete Account
   isCurrentUser(user, pin, currentAccount) {

@@ -1,7 +1,6 @@
 * {
   margin: 0;
   padding: 0;
-  /* box-sizing: inherit; */
 }
 
 .login-container {
@@ -34,11 +33,6 @@
 .app {
   position: relative;
   max-width: 100rem;
-  /* margin: 4rem auto; */
-  /* display: grid; */
-  /* grid-template-columns: 4fr 3fr; */
-  /* grid-template-rows: auto repeat(3, 15rem) auto; */
-  /* gap: 2rem; */
   padding-bottom: 3rem;
 
   /* NOTE This creates the fade in/out anumation */
@@ -79,7 +73,6 @@
 
 .movements__row {
   padding: 2.25rem 4rem;
-  /* display: flex; */
   align-items: center;
   border-bottom: 1px solid #eee;
 }
