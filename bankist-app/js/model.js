@@ -78,7 +78,7 @@ export const model = {
     return structuredClone(normalizeUser);
   },
 
-  async getUserData() {
+  async loadUsers() {
     const rawData = await api.getUsers();
     const users = normalizeApiData(rawData);
     const normalizeUsers = users.map((user) => {
