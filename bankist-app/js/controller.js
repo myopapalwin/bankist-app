@@ -1,5 +1,5 @@
 import { model, state } from "./model.js";
-import { view, UI } from "./view.js";
+import { view } from "./view.js";
 import { normalizeName, auth } from "./helper.js";
 import { validation } from "./validation.js";
 

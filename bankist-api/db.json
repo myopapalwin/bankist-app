@@ -145,67 +145,43 @@
       "security_pin": 2222
     },
     {
-      "full_name": "Maple Lwin",
-      "transactions": [],
+      "full_name": "maplelwin",
+      "transactions": [
+        {
+          "amount": 4444,
+          "type": "deposit"
+        }
+      ],
+      "interest_rate": 1.2,
+      "security_pin": 4444,
+      "id": "LRW7OHs"
+    },
+    {
+      "full_name": "KyawSwar",
+      "transactions": [
+        {
+          "amount": 4444,
+          "type": "deposit"
+        }
+      ],
+      "interest_rate": 1.2,
+      "security_pin": 4444,
+      "id": "BgJmXzC"
+    },
+    {
+      "full_name": "Moe Ma Kha",
+      "transactions": [
+        {
+          "amount": 3333,
+          "type": "deposit"
+        }
+      ],
       "interest_rate": 1.2,
       "security_pin": 3333,
-      "id": "lJErI4-"
+      "id": "whAe7Ej"
     },
     {
-      "full_name": "Min Khi",
-      "transactions": [
-        {
-          "amount": 2000,
-          "type": "deposit"
-        }
-      ],
-      "interest_rate": 1.2,
-      "security_pin": 4444,
-      "id": "R5CnN90"
-    },
-    {
-      "full_name": "Maung Maung",
-      "transactions": [
-        5000
-      ],
-      "interest_rate": 1.3,
-      "security_pin": 4444,
-      "id": "n2s8NOO"
-    },
-    {
-      "full_name": "Kyaw Kyaw",
-      "transactions": [
-        {
-          "amount": 7000,
-          "type": "deposit"
-        },
-        {
-          "amount": 3000,
-          "type": "deposit"
-        },
-        {
-          "amount": 2000,
-          "type": "withdrawal"
-        }
-      ],
-      "interest_rate": 1.5,
-      "security_pin": 7777,
-      "id": "8xMTtg9"
-    },
-    {
-      "full_name": "undefined undefined",
-      "transactions": [
-        {
-          "amount": 5555,
-          "type": "deposit"
-        }
-      ],
-      "interest_rate": 1.2,
-      "security_pin": 5555,
-      "id": "Mv4Pve3"
-    },
-    {
-      "full_name": "May  Oo",
+      "full_name": "Suu Myat",
       "transactions": [
         {
           "amount": 2222,
@@ -214,7 +190,19 @@
       ],
       "interest_rate": 1.2,
       "security_pin": 2222,
-      "id": "w11Ak8E"
+      "id": "Z1S0Oy7"
+    },
+    {
+      "full_name": "KhaingHtoo",
+      "transactions": [
+        {
+          "amount": 5555,
+          "type": "deposit"
+        }
+      ],
+      "interest_rate": 1.2,
+      "security_pin": 5555,
+      "id": "cCRTk2c"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

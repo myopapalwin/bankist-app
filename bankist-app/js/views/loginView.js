@@ -1,5 +1,5 @@
 import { baseView } from "./baseView.js";
-export const UI = {
+const UI = {
   login: {
     form: document.querySelector(".login-form"),
     user: document.querySelector(".login__input--user"),
@@ -26,7 +26,7 @@ export const loginView = {
     });
   },
 
-  clearLoginFormInput() {
+  clearFormInput() {
     UI.login.user.value = "";
     UI.login.pin.value = "";
   },

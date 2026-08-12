@@ -1,3 +1,6 @@
+const UI = {
+  loading: { container: document.querySelector(".overlay") },
+};
 export const baseView = {
   showLoading() {
     UI.loading.container.classList.remove("hidden");
@@ -17,6 +20,7 @@ export const baseView = {
   clearErrors() {
     document.querySelectorAll("[data-error]").forEach((el) => {
       el.textContent = "";
+      console.log(el.textContent);
     });
   },
 };
