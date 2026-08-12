@@ -18,14 +18,6 @@ const UI = {
 export const registerView = {
   ...baseView,
 
-  showLoading() {
-    UI.loading.container.classList.remove("hidden");
-  },
-
-  hideLoading() {
-    UI.loading.container.classList.add("hidden");
-  },
-
   disableSubmit() {
     UI.register.button.disabled = true;
   },

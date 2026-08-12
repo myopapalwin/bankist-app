@@ -203,6 +203,42 @@
       "interest_rate": 1.2,
       "security_pin": 5555,
       "id": "cCRTk2c"
+    },
+    {
+      "full_name": "KooZay",
+      "transactions": [
+        {
+          "amount": 9999,
+          "type": "deposit"
+        }
+      ],
+      "interest_rate": 1.2,
+      "security_pin": 9999,
+      "id": "C_yAYqO"
+    },
+    {
+      "full_name": "MooKoo",
+      "transactions": [
+        {
+          "amount": 1111,
+          "type": "deposit"
+        }
+      ],
+      "interest_rate": 1.2,
+      "security_pin": 1111,
+      "id": "sE1xHGo"
+    },
+    {
+      "full_name": "SoeMoe",
+      "transactions": [
+        {
+          "amount": 5555,
+          "type": "deposit"
+        }
+      ],
+      "interest_rate": 1.2,
+      "security_pin": 5555,
+      "id": "VMT0jx1"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
