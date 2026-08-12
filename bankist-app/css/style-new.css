@@ -3,10 +3,11 @@
   padding: 0;
 }
 
-.login-container {
-  width: 30%;
+.form-container {
+  width: 35%;
   margin: 0 auto;
   margin-top: 5rem;
+  margin-bottom: 5rem;
 }
 .login-form button {
   margin-top: 1rem;
@@ -27,6 +28,22 @@
 .logo {
   height: 4rem;
   margin-right: 1rem;
+}
+
+.overlay {
+  position: fixed !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(3px);
+  z-index: 5;
+  transition: all 0.5s;
 }
 
 /* MAIN */

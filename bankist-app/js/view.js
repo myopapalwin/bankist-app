@@ -21,16 +21,17 @@ export const UI = {
     interest: document.querySelector(".summary__value--interest"),
     btnSort: document.querySelector(".btn--sort"),
   },
-  register: {
-    container: document.querySelector(".register"),
-    form: document.querySelector(".register_form"),
-    firstName: document.getElementById("register__firstname"),
-    lastName: document.getElementById("register__lastname"),
-    password: document.getElementById("register__password"),
-    confirmPass: document.getElementById("register__confirm_password"),
-    balance: document.getElementById("register__balance"),
-    rate: document.getElementById("register__input_rate"),
-  },
+  // register: {
+  //   // container: document.querySelector(".register"),
+  //   form: document.querySelector(".register_form"),
+  //   firstName: document.querySelector(".register__firstname"),
+  //   lastName: document.querySelector(".register__lastname"),
+  //   password: document.querySelector(".register__password"),
+  //   confirmPass: document.querySelector(".register__confirm_password"),
+  //   balance: document.querySelector(".register__balance"),
+  //   rate: document.querySelector(".register__input_rate"),
+  // },
+
   // login: {
   //   form: document.querySelector(".login-form"),
   //   user: document.querySelector(".login__input--user"),
@@ -73,8 +74,8 @@ UI.movements.container.innerHTML = "";
 export const view = {
   showApp() {
     UI.app.container.classList.remove("hidden");
-    UI.register.container.classList.add("hidden");
-    UI.login.form.classList.add("hidden");
+    // UI.register.container.classList.add("hidden");
+    // UI.login.form.classList.add("hidden");
     UI.logout.button.classList.remove("hidden");
   },
 
@@ -88,7 +89,7 @@ export const view = {
 
   showSuccess(account) {
     UI.slogan.welcome.textContent = `Welcome back, ${account.owner}`;
-    UI.app.container.classList.remove("hidden");
+    // UI.app.container.classList.remove("hidden");
   },
 
   // showLoginError(error) {
@@ -106,11 +107,11 @@ export const view = {
   //   });
   // },
 
-  clearRegisterErrors() {
-    document.querySelectorAll("[data-error]").forEach((el) => {
-      el.textContent = "";
-    });
-  },
+  // clearRegisterErrors() {
+  //   document.querySelectorAll("[data-error]").forEach((el) => {
+  //     el.textContent = "";
+  //   });
+  // },
 
   showModal(message) {
     UI.modal.container.classList.remove("hidden");
@@ -148,10 +149,10 @@ export const view = {
     UI.summary.interest.textContent = summary.interest;
   },
 
-  clearLoginInput() {
-    UI.login.user.value = "";
-    UI.login.pin.value = "";
-  },
+  // clearLoginInput() {
+  //   UI.login.user.value = "";
+  //   UI.login.pin.value = "";
+  // },
 
   clearTransferInputs() {
     UI.transfer.to.value = "";
@@ -173,22 +174,22 @@ export const view = {
     UI.summary.in.textContent = `0 USD`;
     UI.summary.out.textContent = `0 USD`;
     UI.summary.interest.textContent = `0 USD`;
-    UI.app.container.classList.add("hidden");
-    UI.register.container.classList.remove("hidden");
-    UI.login.form.classList.remove("hidden");
+    // UI.app.container.classList.add("hidden");
+    // UI.register.container.classList.remove("hidden");
+    // UI.login.form.classList.remove("hidden");
     UI.logout.button.classList.add("hidden");
   },
 
-  getRegisterFormData() {
-    return {
-      firstName: UI.register.firstName.value,
-      lastName: UI.register.lastName.value,
-      password: UI.register.password.value,
-      confirmPass: UI.register.confirmPass.value,
-      balance: UI.register.balance.value,
-      rate: UI.register.rate.value,
-    };
-  },
+  // getRegisterFormData() {
+  //   return {
+  //     firstName: UI.register.firstName.value,
+  //     lastName: UI.register.lastName.value,
+  //     password: UI.register.password.value,
+  //     confirmPass: UI.register.confirmPass.value,
+  //     balance: UI.register.balance.value,
+  //     rate: UI.register.rate.value,
+  //   };
+  // },
 
   // getLoginFormData() {
   //   return {

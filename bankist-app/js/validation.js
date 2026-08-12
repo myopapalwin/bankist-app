@@ -51,7 +51,7 @@ export const validation = {
     const requiredError = validation.validateRequired(
       name,
       "firstName",
-      "Please Enter Your First Name.",
+      "Please Enter First Name.",
     );
     if (requiredError) return requiredError;
 
@@ -76,7 +76,7 @@ export const validation = {
     const requiredError = validation.validateRequired(
       name,
       "lastName",
-      "Please Enter Your Last Name.",
+      "Please Enter Last Name.",
     );
     if (requiredError) return requiredError;
 

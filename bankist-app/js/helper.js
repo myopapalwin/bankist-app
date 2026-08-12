@@ -33,3 +33,6 @@ export const auth = {
     localStorage.removeItem(STORAGE_KEY);
   },
 };
+
+// Delay
+export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));

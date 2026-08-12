@@ -4,6 +4,17 @@ import { loginView } from "../views/loginView.js";
 import { auth } from "../helper.js";
 
 export const loginController = {
+  async init() {
+    try {
+      const users = await model.loadUsers();
+      console.log(users);
+
+      loginView.bindLogin(loginController.login);
+    } catch (error) {
+      console.error(error);
+    } finally {
+    }
+  },
   login(formData) {
     try {
       state.sortState = false;
@@ -41,27 +52,11 @@ export const loginController = {
 
       window.location.href = "/dashboard.html";
 
-      loginView.clearLoginFormInput();
+      loginView.clearFormInput();
     } catch (error) {
       console.error(error);
     }
   },
 };
 
-function bindEventLogin() {
-  loginView.bindLogin(loginController.login);
-}
-
-const init = async () => {
-  try {
-    const users = await model.loadUsers();
-    console.log(users);
-
-    bindEventLogin();
-  } catch (error) {
-    console.error(error);
-  } finally {
-  }
-};
-
-init();
+loginController.init();
