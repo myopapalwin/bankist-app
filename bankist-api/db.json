@@ -3,6 +3,7 @@
     {
       "id": "1",
       "full_name": "Jonas Schmedtmann",
+      "username": "js",
       "transactions": [
         {
           "amount": 200,
@@ -95,6 +96,7 @@
     {
       "id": "2",
       "full_name": "Jessica Davis",
+      "username": "jd",
       "transactions": [
         {
           "amount": 200,
@@ -145,7 +147,8 @@
       "security_pin": 2222
     },
     {
-      "full_name": "maplelwin",
+      "full_name": "Maple Lwin",
+      "username": "myopapa123",
       "transactions": [
         {
           "amount": 4444,
@@ -154,22 +157,11 @@
       ],
       "interest_rate": 1.2,
       "security_pin": 4444,
-      "id": "LRW7OHs"
+      "id": "P8ajj91"
     },
     {
-      "full_name": "KyawSwar",
-      "transactions": [
-        {
-          "amount": 4444,
-          "type": "deposit"
-        }
-      ],
-      "interest_rate": 1.2,
-      "security_pin": 4444,
-      "id": "BgJmXzC"
-    },
-    {
-      "full_name": "Moe Ma Kha",
+      "full_name": "Myo Khant",
+      "username": "myokhant123",
       "transactions": [
         {
           "amount": 3333,
@@ -178,46 +170,11 @@
       ],
       "interest_rate": 1.2,
       "security_pin": 3333,
-      "id": "whAe7Ej"
+      "id": "NHGsNqV"
     },
     {
-      "full_name": "Suu Myat",
-      "transactions": [
-        {
-          "amount": 2222,
-          "type": "deposit"
-        }
-      ],
-      "interest_rate": 1.2,
-      "security_pin": 2222,
-      "id": "Z1S0Oy7"
-    },
-    {
-      "full_name": "KhaingHtoo",
-      "transactions": [
-        {
-          "amount": 5555,
-          "type": "deposit"
-        }
-      ],
-      "interest_rate": 1.2,
-      "security_pin": 5555,
-      "id": "cCRTk2c"
-    },
-    {
-      "full_name": "KooZay",
-      "transactions": [
-        {
-          "amount": 9999,
-          "type": "deposit"
-        }
-      ],
-      "interest_rate": 1.2,
-      "security_pin": 9999,
-      "id": "C_yAYqO"
-    },
-    {
-      "full_name": "MooKoo",
+      "full_name": "U Kyaw Swar",
+      "username": "u kyaw swar",
       "transactions": [
         {
           "amount": 1111,
@@ -226,19 +183,33 @@
       ],
       "interest_rate": 1.2,
       "security_pin": 1111,
-      "id": "sE1xHGo"
+      "id": "L98xnWd"
     },
     {
-      "full_name": "SoeMoe",
+      "full_name": "U Than Lwin",
+      "username": "Uthan123@",
       "transactions": [
         {
-          "amount": 5555,
+          "amount": 8000,
           "type": "deposit"
         }
       ],
       "interest_rate": 1.2,
-      "security_pin": 5555,
-      "id": "VMT0jx1"
+      "security_pin": 8888,
+      "id": "Ebzk0n_"
+    },
+    {
+      "full_name": "U Kyaw Swar",
+      "username": "ukyawswar112@",
+      "transactions": [
+        {
+          "amount": 4444,
+          "type": "deposit"
+        }
+      ],
+      "interest_rate": 1.2,
+      "security_pin": 4444,
+      "id": "UbBqZw7"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

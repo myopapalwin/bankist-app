@@ -5,6 +5,7 @@ import { validation } from "../validation.js";
 
 export const registerController = {
   async init() {
+    await model.loadUsers();
     registerView.bindEventRegister(registerController.createAccount);
   },
 
@@ -15,8 +16,18 @@ export const registerController = {
 
       registerView.clearErrors();
 
-      if (errors.length) {
+      if (Object.keys(errors).length) {
         registerView.renderErrors(errors);
+        return;
+      }
+
+      const usernameExists = model.findAccountByUsername(formData.username);
+      console.log(usernameExists);
+
+      if (usernameExists) {
+        registerView.renderErrors([
+          { field: "username", message: "User name already exists." },
+        ]);
         return;
       }
 

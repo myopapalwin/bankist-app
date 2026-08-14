@@ -21,7 +21,7 @@ export const model = {
           ? { amount: Math.abs(tc.amount), type: "deposit" }
           : { amount: -Math.abs(tc.amount), type: "withdrawal" },
       ),
-      userName: createUserName(data.full_name),
+      username: data.username,
       interestRate: Number(data.interest_rate) || 0,
       pin: Number(data.security_pin),
     };
@@ -55,7 +55,8 @@ export const model = {
 
   async createUserData(formData) {
     const rawData = {
-      full_name: `${formData.firstName}${formData.lastName}`,
+      full_name: formData.ownerName,
+      username: formData.username,
       transactions: [
         {
           amount: Number(formData.balance),
@@ -92,23 +93,13 @@ export const model = {
   },
 
   findAccountByUsername(userInputName) {
-    const nmName = normalizeName(userInputName); // call
-
-    // Find account with user name
-    const accWithUserName = state.accounts.find((account) => {
-      const userName = normalizeName(account.userName);
-      return userName === nmName;
+    console.log("USER INPUT:", userInputName);
+    console.log("STATE ACCOUNTS:", state.accounts);
+    return state.accounts.find((account) => {
+      console.log("ACCOUNT:", account);
+      console.log("ACCOUNT USERNAME:", account.username);
+      return normalizeName(account.username) === normalizeName(userInputName);
     });
-
-    if (accWithUserName) return accWithUserName;
-
-    // Find account with owner name
-    const accWithOwnername = state.accounts.find((account) => {
-      const ownerName = normalizeName(account.owner);
-      return ownerName.includes(nmName);
-    });
-
-    return accWithOwnername;
   },
 
   findAccountByUserId(id) {
