@@ -29,9 +29,7 @@ export const loginController = {
         return; // !important
       }
 
-      console.log(formData.username);
       const account = model.findAccountByUsername(formData.username);
-      console.log(account);
 
       if (!account) {
         loginView.renderErrors([

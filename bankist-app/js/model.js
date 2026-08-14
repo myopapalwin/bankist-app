@@ -93,11 +93,7 @@ export const model = {
   },
 
   findAccountByUsername(userInputName) {
-    console.log("USER INPUT:", userInputName);
-    console.log("STATE ACCOUNTS:", state.accounts);
     return state.accounts.find((account) => {
-      console.log("ACCOUNT:", account);
-      console.log("ACCOUNT USERNAME:", account.username);
       return normalizeName(account.username) === normalizeName(userInputName);
     });
   },
