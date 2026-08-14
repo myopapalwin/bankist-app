@@ -9,6 +9,16 @@ export const validation = {
     }
   },
 
+  validateUsernameFormat(username, fl, msg) {
+    const regex = /^[a-zA-Z0-9]+$/;
+    if (regex.test(username)) {
+      return {
+        field: fl,
+        message: msg,
+      };
+    }
+  },
+
   validateMinLength(value, min, fl, msg) {
     if (value.length < min) {
       return {
@@ -47,52 +57,67 @@ export const validation = {
   },
 
   // Register helper
-  validateFirstName(name) {
+  validateOwnername(ownerName) {
     const requiredError = validation.validateRequired(
-      name,
-      "firstName",
-      "Please Enter First Name.",
+      ownerName,
+      "ownerName",
+      "Please Enter Owner Name.",
     );
     if (requiredError) return requiredError;
 
     const minLengthError = validation.validateMinLength(
-      name,
+      ownerName,
       3,
-      "firstName",
-      "First name must not less than 3 characters.",
+      "ownerName",
+      "Owner name must not less than 3 characters.",
     );
     if (minLengthError) return minLengthError;
 
     const maxLengthError = validation.validateMaxLength(
-      name,
+      ownerName,
       15,
-      "firstName",
-      "First name must not exceed than 20 characters.",
+      "ownerName",
+      "Owner name must not exceed than 20 characters.",
     );
     if (maxLengthError) return maxLengthError;
   },
 
-  validateLastName(name) {
+  validateUsername(username) {
     const requiredError = validation.validateRequired(
-      name,
-      "lastName",
-      "Please Enter Last Name.",
+      username,
+      "username",
+      "Please Enter User Name.",
     );
     if (requiredError) return requiredError;
 
+    const hasSpace = /\s/.test(username);
+    if (hasSpace) {
+      return {
+        field: "username",
+        message: "Spaces are not allowed.",
+      };
+    }
+
+    const format = validation.validateUsernameFormat(
+      username,
+      "username",
+      "User name must have at least 3 numbers, 1 special number",
+    );
+    if (format) return format;
+
     const minLengthError = validation.validateMinLength(
-      name,
+      username,
       3,
-      "lastName",
-      "Last name must not less than 3 characters.",
+      "username",
+      "User name must not less than 3 characters.",
     );
     if (minLengthError) return minLengthError;
 
     const maxLengthError = validation.validateMaxLength(
-      name,
-      15,
-      "lastName",
-      "Last name must not exceed than 20 characters.",
+      username,
+      20,
+      "username",
+      "User name must not exceed than 20 characters.",
     );
     if (maxLengthError) return maxLengthError;
   },
@@ -241,8 +266,8 @@ export const validation = {
   // Register Form
   handleRegister(formData) {
     const errors = [
-      validation.validateFirstName(formData.firstName),
-      validation.validateLastName(formData.lastName),
+      validation.validateOwnername(formData.ownerName),
+      validation.validateUsername(formData.username),
       validation.validatePassword(formData.password),
       validation.validateConfirmPass(formData.confirmPass, formData.password),
       validation.validateBalance(formData.balance),

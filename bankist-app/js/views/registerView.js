@@ -1,12 +1,11 @@
 import { baseView } from "./baseView.js";
 
 const UI = {
-  loading: { container: document.querySelector(".overlay") },
   register: {
     success: document.querySelector(".register_success"),
     form: document.querySelector(".register_form"),
-    firstName: document.querySelector(".register__firstname"),
-    lastName: document.querySelector(".register__lastname"),
+    ownerName: document.querySelector(".register__ownername"),
+    username: document.querySelector(".register__username"),
     password: document.querySelector(".register__password"),
     confirmPass: document.querySelector(".register__confirm_password"),
     balance: document.querySelector(".register__balance"),
@@ -32,8 +31,8 @@ export const registerView = {
 
   getRegisterFormData() {
     return {
-      firstName: UI.register.firstName.value,
-      lastName: UI.register.lastName.value,
+      ownerName: UI.register.ownerName.value,
+      username: UI.register.username.value,
       password: UI.register.password.value,
       confirmPass: UI.register.confirmPass.value,
       balance: UI.register.balance.value,
@@ -50,8 +49,8 @@ export const registerView = {
   },
 
   clearFormInput() {
-    UI.register.firstName.value = "";
-    UI.register.lastName.value = "";
+    UI.register.ownerName.value = "";
+    UI.register.username.value = "";
     UI.register.password.value = "";
     UI.register.confirmPass.value = "";
     UI.register.balance.value = "";
