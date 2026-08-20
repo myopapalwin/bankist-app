@@ -10,83 +10,31 @@
           "type": "deposit"
         },
         {
-          "amount": 400,
-          "type": "withdrawal"
-        },
-        {
-          "amount": 450,
-          "type": "withdrawal"
-        },
-        {
-          "amount": 750,
+          "amount": 100,
           "type": "deposit"
         },
         {
-          "amount": 3000,
+          "amount": 11,
           "type": "deposit"
         },
         {
-          "amount": 10,
+          "amount": -15,
           "type": "withdrawal"
         },
         {
-          "amount": 90,
+          "amount": -96,
           "type": "withdrawal"
         },
         {
-          "amount": 30,
-          "type": "withdrawal"
-        },
-        {
-          "amount": 70,
-          "type": "withdrawal"
-        },
-        {
-          "amount": 400,
-          "type": "withdrawal"
-        },
-        {
-          "amount": 500,
+          "amount": -100,
           "type": "withdrawal"
         },
         {
           "amount": 100,
-          "type": "withdrawal"
-        },
-        {
-          "amount": 600,
           "type": "deposit"
         },
         {
-          "amount": 10000,
-          "type": "deposit"
-        },
-        {
-          "amount": 9000,
-          "type": "deposit"
-        },
-        {
-          "amount": 10000,
-          "type": "withdrawal"
-        },
-        {
-          "amount": 1500,
-          "type": "withdrawal"
-        },
-        {
-          "amount": 1111,
-          "type": "withdrawal"
-        },
-        {
-          "amount": 1,
-          "type": "deposit"
-        },
-        {
-          "amount": 10,
-          "type": "deposit"
-        },
-        {
-          "amount": 100,
+          "amount": 200,
           "type": "deposit"
         }
       ],
@@ -99,7 +47,7 @@
       "username": "jd",
       "transactions": [
         {
-          "amount": 200,
+          "amount": -200,
           "type": "withdrawal"
         },
         {
@@ -107,40 +55,44 @@
           "type": "deposit"
         },
         {
-          "amount": 10,
+          "amount": -11,
+          "type": "withdrawal"
+        },
+        {
+          "amount": 15,
           "type": "deposit"
+        },
+        {
+          "amount": -4,
+          "type": "withdrawal"
         },
         {
           "amount": 200,
+          "type": "deposit"
+        },
+        {
+          "amount": 15,
+          "type": "deposit"
+        },
+        {
+          "amount": 115,
+          "type": "deposit"
+        },
+        {
+          "amount": 20,
+          "type": "deposit"
+        },
+        {
+          "amount": 50,
+          "type": "deposit"
+        },
+        {
+          "amount": 100,
+          "type": "deposit"
+        },
+        {
+          "amount": -200,
           "type": "withdrawal"
-        },
-        {
-          "amount": 30,
-          "type": "deposit"
-        },
-        {
-          "amount": 400,
-          "type": "deposit"
-        },
-        {
-          "amount": 40,
-          "type": "withdrawal"
-        },
-        {
-          "amount": 400,
-          "type": "deposit"
-        },
-        {
-          "amount": 10000,
-          "type": "deposit"
-        },
-        {
-          "amount": 1500,
-          "type": "deposit"
-        },
-        {
-          "amount": 1111,
-          "type": "deposit"
         }
       ],
       "interest_rate": 1.5,
@@ -192,6 +144,10 @@
         {
           "amount": 8000,
           "type": "deposit"
+        },
+        {
+          "amount": 96,
+          "type": "deposit"
         }
       ],
       "interest_rate": 1.2,
@@ -210,6 +166,27 @@
       "interest_rate": 1.2,
       "security_pin": 4444,
       "id": "UbBqZw7"
+    },
+    {
+      "full_name": "Daw Khin Mya Nwe",
+      "username": "khinmyanwe1@",
+      "transactions": [
+        {
+          "amount": 5000,
+          "type": "deposit"
+        },
+        {
+          "amount": 100,
+          "type": "deposit"
+        },
+        {
+          "amount": 4,
+          "type": "deposit"
+        }
+      ],
+      "interest_rate": 1.2,
+      "security_pin": 5555,
+      "id": "1ih43Vg"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

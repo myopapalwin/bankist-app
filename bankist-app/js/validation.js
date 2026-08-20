@@ -75,7 +75,7 @@ export const validation = {
 
     const maxLengthError = validation.validateMaxLength(
       ownerName,
-      15,
+      20,
       "ownerName",
       "Owner name must not exceed than 20 characters.",
     );
@@ -101,7 +101,7 @@ export const validation = {
     const format = validation.validateUsernameFormat(
       username,
       "username",
-      "User name must have at least 3 numbers, 1 special number",
+      "User name must have at least 1 numbers, 1 special number",
     );
     if (format) return format;
 
@@ -188,79 +188,62 @@ export const validation = {
   },
 
   // Loan
-  validateLoanMoney(deposit, loanAmt, acc) {
-    if (!Number.isFinite(loanAmt) || loanAmt <= 0) {
-      return {
-        field: "amount",
+  validateLoan(data) {
+    const { loanUser, loanAmount, deposit } = data;
+
+    const errors = [];
+
+    if (!Number.isFinite(loanAmount) && loanAmount <= 0) {
+      errors.push({
+        field: "loan",
         message: "Please input valid amount",
-      };
+      });
     }
 
-    if (deposit < loanAmt) {
-      return {
+    if (deposit < loanAmount) {
+      errors.push({
         field: "loan",
         message: "Loan amount must not exceed your deposite.",
-      };
+      });
     }
+
+    if (!loanUser) {
+      errors.push({
+        field: "loan",
+        message: "User does not exists.",
+      });
+    }
+
+    return errors;
   },
 
   // Transfer
-  validateTransfer(amount, sender, username, FindReceiverAccFn, balance) {
-    if (!Number.isFinite(amount) || !username.trim()) {
-      return {
-        error: {
-          field: "required",
-          message: "Please enter receiver account and amount.",
-        },
-        receiver: null,
-      };
-    }
-
-    const receiver = FindReceiverAccFn(username);
-
-    if (!receiver) {
-      return {
-        error: {
-          field: "receiver",
-          message: "Receiver account does not exist.",
-        },
-        receiver: null,
-      };
-    }
-
-    if (receiver === sender) {
-      return {
-        error: {
-          field: "sender",
-          message: "You can not transfer same account.",
-        },
-        receiver: null,
-      };
-    }
-
-    if (!Number.isFinite(amount) || amount <= 0) {
-      return {
-        error: {
-          field: "amount",
-          message: "Please input valid amount",
-        },
-        receiver: null,
-      };
-    }
+  validateTransfer(data) {
+    const { receiverName, amount, balance } = data;
+    const errors = [];
 
     if (amount >= balance) {
-      return {
-        error: {
-          field: "amount",
-          message: "Your transfer amount must not exceed your balance.",
-        },
-        receiver: null,
-      };
+      errors.push({
+        field: "transfer",
+        message: "Your transfer amount must not exceed your balance.",
+      });
     }
 
-    return {
-      receiver,
-    };
+    if (!Number.isFinite(amount) && !receiverName.trim()) {
+      errors.push({
+        field: "transfer",
+        message: "Please enter receiver account and amount.",
+      });
+    }
+
+    if (!Number.isFinite(amount) && amount < 0) {
+      errors.push({
+        field: "transfer",
+        message: "Please input valid amount",
+      });
+    }
+
+    return errors;
   },
 
   // Register Form
