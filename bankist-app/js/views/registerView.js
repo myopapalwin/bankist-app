@@ -2,7 +2,6 @@ import { baseView } from "./baseView.js";
 
 const UI = {
   register: {
-    success: document.querySelector(".register_success"),
     form: document.querySelector(".register_form"),
     ownerName: document.querySelector(".register__ownername"),
     username: document.querySelector(".register__username"),
@@ -23,10 +22,6 @@ export const registerView = {
 
   enableSubmit() {
     UI.register.button.disabled = false;
-  },
-
-  showSuccess() {
-    UI.register.success.classList.remove("hidden");
   },
 
   getRegisterFormData() {

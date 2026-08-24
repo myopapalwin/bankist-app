@@ -1,4 +1,4 @@
-import { auth } from "../helper.js";
+import { auth, delay } from "../helper.js";
 import { accountModel, state } from "../models/accountModel.js";
 import { movementModel } from "../models/movementModel.js";
 import { validation } from "../validation.js";
@@ -23,11 +23,7 @@ export const dashboardController = {
 
     dashboardView.showUser(latestAccount);
 
-    dashboardView.renderMovements(latestAccount.movements);
-
-    const summary = movementModel.getAccountSummary(latestAccount);
-
-    dashboardView.renderSummary(summary);
+    dashboardHelper.updateUI(latestAccount);
 
     dashboardView.bindTransferEvent(this.transfer);
 
@@ -127,10 +123,54 @@ export const dashboardController = {
 
   async closeAccount(formData) {
     const { username, password } = formData;
+
+    dashboardView.clearErrors();
+
+    const errors = validation.validateCloseAccouont(formData);
+    console.log(errors);
+
+    if (errors.length) {
+      dashboardView.renderErrors(errors);
+      return;
+    }
+
     const currentAccount = state.currentAccount;
 
-    console.log(username, password);
-    console.log(currentAccount);
+    if (currentAccount.username !== username) {
+      dashboardView.renderErrors([
+        {
+          field: "close",
+          message: "Your account does not match!",
+        },
+      ]);
+      return;
+    }
+
+    if (Number(password) !== Number(currentAccount.password)) {
+      dashboardView.renderErrors([
+        {
+          field: "close",
+          message: "Your password does not match!",
+        },
+      ]);
+      return;
+    }
+
+    dashboardView.showLoading();
+
+    await accountModel.deleteCurrentUser(currentAccount.id);
+
+    dashboardView.hideLoading();
+
+    // dashboardView.showSuccess();
+
+    state.currentAccount = null;
+
+    auth.removeUser();
+
+    dashboardView.clearCloseAccountInputs();
+
+    window.location.href = "/index.html";
   },
 
   sortMovement() {

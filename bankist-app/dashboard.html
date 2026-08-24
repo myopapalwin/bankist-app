@@ -40,9 +40,15 @@
       </div>
     </nav>
 
+    <div class="overlay hidden">Deleting account ...</div>
+
     <main class="app">
       <div class="container">
-        <div class="spinner hidden">Loading...</div>
+        <!-- <div class="spinner hidden">Loading...</div> -->
+
+        <div class="alert alert-success success hidden" role="alert">
+          Your account deleted successfully.
+        </div>
 
         <!-- BALANCE -->
         <div class="balance">
@@ -132,6 +138,7 @@
             <!-- OPERATION: CLOSE -->
             <div class="operation operation--close">
               <h2>Close account</h2>
+              <p class="error" data-error="close"></p>
               <form class="form form--close">
                 <div class="row g-2">
                   <div class="col-sm-6">

@@ -39,7 +39,7 @@ export const loginController = {
         return;
       }
 
-      if (account.pin !== Number(formData.password)) {
+      if (account.password !== Number(formData.password)) {
         loginView.renderErrors([
           { field: "password", message: "Wrong Password!" },
         ]);

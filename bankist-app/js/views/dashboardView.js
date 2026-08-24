@@ -121,6 +121,11 @@ export const dashboardView = {
     });
   },
 
+  clearCloseAccountInputs() {
+    UI.close.username.value = "";
+    UI.close.password.value = "";
+  },
+
   // Sorting
   bindSortingEvent(handler) {
     UI.summary.btnSort.addEventListener("click", function (e) {

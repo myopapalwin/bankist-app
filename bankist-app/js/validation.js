@@ -280,17 +280,17 @@ export const validation = {
   },
 
   // Delete Account
-  isCurrentUser(user, pin, currentAccount) {
-    if (
-      !user?.trim() ||
-      !pin ||
-      currentAccount.userName !== user ||
-      pin !== currentAccount.pin
-    ) {
-      return {
+  validateCloseAccouont(formData) {
+    const { username, password } = formData;
+    const errors = [];
+
+    if (!username?.trim() && !password) {
+      errors.push({
         field: "close",
-        message: "You cannot delete. Try again later.",
-      };
+        message: "Please enter your data",
+      });
     }
+
+    return errors;
   },
 };

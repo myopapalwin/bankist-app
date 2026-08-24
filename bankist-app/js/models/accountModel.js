@@ -20,7 +20,7 @@ export const accountModel = {
       ),
       username: data.username,
       interestRate: Number(data.interest_rate) || 0,
-      pin: Number(data.security_pin),
+      password: Number(data.security_pin),
     };
   },
 
@@ -74,5 +74,13 @@ export const accountModel = {
       return acc.id === id;
     });
     return user;
+  },
+
+  async deleteCurrentUser(id) {
+    await api.deleteUser(id);
+
+    state.accounts.filter((acc) => acc.id !== id);
+
+    return state.accounts;
   },
 };
