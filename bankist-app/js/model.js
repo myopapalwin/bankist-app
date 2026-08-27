@@ -4,133 +4,125 @@
 import { api } from "./api.js";
 import { createUserName, normalizeName, normalizeApiData } from "./helper.js";
 
-export const state = {
-  currentAccount: null,
-  sortState: false,
-  accounts: [],
-};
+// export const state = {
+//   currentAccount: null,
+//   sortState: false,
+//   accounts: [],
+// };
 
 export const model = {
   // Helper: normalize account
-  normalizeAccount(data) {
-    return {
-      id: data.id,
-      owner: String(data.full_name).trim(),
-      movements: (data.transactions ?? []).map((tc) =>
-        tc.type === "deposit"
-          ? { amount: Math.abs(tc.amount), type: "deposit" }
-          : { amount: -Math.abs(tc.amount), type: "withdrawal" },
-      ),
-      username: data.username,
-      interestRate: Number(data.interest_rate) || 0,
-      pin: Number(data.security_pin),
-    };
-  },
+  // normalizeAccount(data) {
+  //   return {
+  //     id: data.id,
+  //     owner: String(data.full_name).trim(),
+  //     movements: (data.transactions ?? []).map((tc) =>
+  //       tc.type === "deposit"
+  //         ? { amount: Math.abs(tc.amount), type: "deposit" }
+  //         : { amount: -Math.abs(tc.amount), type: "withdrawal" },
+  //     ),
+  //     username: data.username,
+  //     interestRate: Number(data.interest_rate) || 0,
+  //     pin: Number(data.security_pin),
+  //   };
+  // },
 
-  // Account Summary Helper
-  calculateBalance(movements) {
-    const sum = movements.reduce((acc, cur) => acc + cur.amount, 0);
-    return sum;
-  },
+  // async createUserData(formData) {
+  //   const rawData = {
+  //     full_name: formData.ownerName,
+  //     username: formData.username,
+  //     transactions: [
+  //       {
+  //         amount: Number(formData.balance),
+  //         type: "deposit",
+  //       },
+  //     ],
+  //     interest_rate: Number(formData.rate),
+  //     security_pin: Number(formData.password),
+  //   };
 
-  calculateDeposit(movements) {
-    return movements
-      .filter((mov) => mov.type === "deposit")
-      .reduce((acc, cur) => acc + cur.amount, 0);
-  },
+  //   const newUser = await api.createUser(rawData); // Sending to api
 
-  calculateWithdraw(movements) {
-    return movements
-      .filter((mov) => mov.type === "withdrawal")
-      .reduce((acc, cur) => acc + cur.amount, 0);
-  },
+  //   if (!newUser) {
+  //     throw new Error("Cannot create user");
+  //   }
 
-  calculateInterest(movements, interestRate) {
-    const deposit = movements
-      .filter((mov) => mov.type === "deposit")
-      .reduce((acc, cur) => acc + cur.amount, 0);
+  //   const normalizeUser = this.normalizeAccount(newUser);
 
-    return (deposit * interestRate) / 100;
-  },
+  //   state.accounts.push(normalizeUser); // do not return this line >> this push method output array length
+  //   return structuredClone(normalizeUser);
+  // },
 
-  async createUserData(formData) {
-    const rawData = {
-      full_name: formData.ownerName,
-      username: formData.username,
-      transactions: [
-        {
-          amount: Number(formData.balance),
-          type: "deposit",
-        },
-      ],
-      interest_rate: Number(formData.rate),
-      security_pin: Number(formData.password),
-    };
+  // async loadUsers() {
+  //   const rawData = await api.getUsers();
+  //   const users = normalizeApiData(rawData);
+  //   const normalizeUsers = users.map((user) => {
+  //     return this.normalizeAccount(user);
+  //   });
 
-    const newUser = await api.createUser(rawData); // Sending to api
+  //   state.accounts = normalizeUsers.map((account) => ({
+  //     ...account,
+  //   }));
+  //   return state.accounts;
+  // },
 
-    if (!newUser) {
-      throw new Error("Cannot create user");
-    }
+  // findAccountByUsername(userInputName) {
+  //   return state.accounts.find((account) => {
+  //     return normalizeName(account.username) === normalizeName(userInputName);
+  //   });
+  // },
 
-    const normalizeUser = this.normalizeAccount(newUser);
+  // findAccountByUserId(id) {
+  //   const user = state.accounts.find((acc) => {
+  //     return acc.id === id;
+  //   });
+  //   return user;
+  // },
 
-    state.accounts.push(normalizeUser); // do not return this line >> this push method output array length
-    return structuredClone(normalizeUser);
-  },
+  // Summary Helper
+  // calculateBalance(movements) {
+  //   const sum = movements.reduce((acc, cur) => acc + cur.amount, 0);
+  //   return sum;
+  // },
 
-  async loadUsers() {
-    const rawData = await api.getUsers();
-    const users = normalizeApiData(rawData);
-    const normalizeUsers = users.map((user) => {
-      return this.normalizeAccount(user);
-    });
+  // calculateDeposit(movements) {
+  //   return movements
+  //     .filter((mov) => mov.type === "deposit")
+  //     .reduce((acc, cur) => acc + cur.amount, 0);
+  // },
 
-    state.accounts = normalizeUsers.map((account) => ({
-      ...account,
-    }));
-    return state.accounts;
-  },
+  // calculateWithdraw(movements) {
+  //   return movements
+  //     .filter((mov) => mov.type === "withdrawal")
+  //     .reduce((acc, cur) => acc + cur.amount, 0);
+  // },
 
-  findAccountByUsername(userInputName) {
-    return state.accounts.find((account) => {
-      return normalizeName(account.username) === normalizeName(userInputName);
-    });
-  },
+  // calculateInterest(movements, interestRate) {
+  //   const deposit = movements
+  //     .filter((mov) => mov.type === "deposit")
+  //     .reduce((acc, cur) => acc + cur.amount, 0);
 
-  findAccountByUserId(id) {
-    const user = state.accounts.find((acc) => acc.id === id);
-    return user;
-  },
+  //   return (deposit * interestRate) / 100;
+  // },
 
-  transferMoney(sender, receiver, amt) {
-    sender.movements.push({ amount: -Math.abs(amt), type: "withdrawal" });
-    receiver.movements.push({ amount: Math.abs(amt), type: "deposit" });
-  },
+  // getAccountSummary(account) {
+  //   const { movements, interestRate } = account;
+  //   return {
+  //     balance: this.calculateBalance(movements),
+  //     deposit: this.calculateDeposit(movements),
+  //     withdraw: this.calculateWithdraw(movements),
+  //     interest: this.calculateInterest(movements, interestRate),
+  //   };
+  // },
 
-  loanMoney(loanAmt, acc) {
-    acc.movements.push({ amount: loanAmt, type: "deposit" });
-  },
+  // transferMoney(sender, receiver, amt) {
+  //   sender.movements.push({ amount: -Math.abs(amt), type: "withdrawal" });
+  //   receiver.movements.push({ amount: Math.abs(amt), type: "deposit" });
+  // },
 
-  async updateUserMovements(account) {
-    const transactions = account.movements.map((movement) => ({
-      amount: Math.abs(movement.amount),
-      type: movement.type,
-    }));
-
-    const updatedUser = await api.updateUser(account.id, { transactions });
-    return updatedUser;
-  },
-
-  getAccountSummary(account) {
-    const { movements, interestRate } = account;
-    return {
-      balance: this.calculateBalance(movements),
-      deposit: this.calculateDeposit(movements),
-      withdraw: this.calculateWithdraw(movements),
-      interest: this.calculateInterest(movements, interestRate),
-    };
-  },
+  // loanMoney(loanAmt, acc) {
+  //   acc.movements.push({ amount: loanAmt, type: "deposit" });
+  // },
 
   async deleteCurrentUser(id) {
     await api.deleteUser(id);
@@ -140,7 +132,17 @@ export const model = {
     return state.accounts;
   },
 
-  sorting(movements) {
-    return [...movements].sort((a, b) => a.amount - b.amount);
-  },
+  // async updateUserMovements(account) {
+  //   const transactions = account.movements.map((movement) => ({
+  //     amount: Math.abs(movement.amount),
+  //     type: movement.type,
+  //   }));
+
+  //   const updatedUser = await api.updateUser(account.id, { transactions });
+  //   return updatedUser;
+  // },
+
+  // sorting(movements) {
+  //   return [...movements].sort((a, b) => a.amount - b.amount);
+  // },
 };

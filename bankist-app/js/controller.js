@@ -13,23 +13,23 @@ const controllerHelper = {
 };
 
 export const accountController = {
-  async createAccount(formData) {
-    try {
-      const errors = validation.handleRegister(formData);
+  // async createAccount(formData) {
+  //   try {
+  //     const errors = validation.handleRegister(formData);
 
-      view.clearRegisterErrors();
+  //     view.clearRegisterErrors();
 
-      if (errors.length) {
-        console.log(errors.length);
-        view.renderErrors(errors);
-        return;
-      }
+  //     if (errors.length) {
+  //       console.log(errors.length);
+  //       view.renderErrors(errors);
+  //       return;
+  //     }
 
-      return await model.createUserData(formData);
-    } catch (error) {
-      console.error(error);
-    }
-  },
+  //     return await model.createUserData(formData);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // },
 
   // login(formData) {
   //   try {
@@ -69,79 +69,79 @@ export const accountController = {
   //   }
   // },
 
-  async transfer(username, amt) {
-    try {
-      view.showLoading();
+  // async transfer(username, amt) {
+  //   try {
+  //     view.showLoading();
 
-      const sender = state.currentAccount;
+  //     const sender = state.currentAccount;
 
-      // Balance before transfer
-      const currentBalance = model.calculateBalance(sender.movements);
-      const amount = Number(amt);
+  //     // Balance before transfer
+  //     const currentBalance = model.calculateBalance(sender.movements);
+  //     const amount = Number(amt);
 
-      const result = validation.validateTransfer(
-        amount,
-        sender,
-        username,
-        model.findAccountByUsername,
-        currentBalance,
-      );
+  //     const result = validation.validateTransfer(
+  //       amount,
+  //       sender,
+  //       username,
+  //       model.findAccountByUsername,
+  //       currentBalance,
+  //     );
 
-      if (result.error) {
-        view.clearTransferInputs();
-        view.showModal(result.error.message);
-        return;
-      }
+  //     if (result.error) {
+  //       view.clearTransferInputs();
+  //       view.showModal(result.error.message);
+  //       return;
+  //     }
 
-      const receiver = result.receiver;
+  //     const receiver = result.receiver;
 
-      model.transferMoney(sender, receiver, amount);
+  //     model.transferMoney(sender, receiver, amount);
 
-      await Promise.all([
-        model.updateUserMovements(sender),
-        model.updateUserMovements(receiver),
-      ]);
+  //     await Promise.all([
+  //       model.updateUserMovements(sender),
+  //       model.updateUserMovements(receiver),
+  //     ]);
 
-      // // Update UI
-      controllerHelper.updateUI(sender);
+  //     // // Update UI
+  //     controllerHelper.updateUI(sender);
 
-      view.clearTransferInputs();
-    } catch (error) {
-      console.error(error);
-    } finally {
-      view.hideLoading();
-    }
-  },
+  //     view.clearTransferInputs();
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     view.hideLoading();
+  //   }
+  // },
 
-  async loan(amt) {
-    try {
-      view.showLoading();
-      const currentAcc = state.currentAccount;
-      const loanAmt = Number(amt);
-      const deposit = model.calculateDeposit(currentAcc.movements);
+  // async loan(amt) {
+  //   try {
+  //     view.showLoading();
+  //     const currentAcc = state.currentAccount;
+  //     const loanAmt = Number(amt);
+  //     const deposit = model.calculateDeposit(currentAcc.movements);
 
-      const error = validation.validateLoanMoney(deposit, loanAmt, currentAcc);
-      console.log(error);
+  //     const error = validation.validateLoanMoney(deposit, loanAmt, currentAcc);
+  //     console.log(error);
 
-      if (error) {
-        view.showModal(error.message);
-        return;
-      }
-      model.loanMoney(loanAmt, currentAcc);
+  //     if (error) {
+  //       view.showModal(error.message);
+  //       return;
+  //     }
+  //     model.loanMoney(loanAmt, currentAcc);
 
-      await model.updateUserMovements(currentAcc);
+  //     await model.updateUserMovements(currentAcc);
 
-      // Update UI
-      controllerHelper.updateUI(currentAcc);
+  //     // Update UI
+  //     controllerHelper.updateUI(currentAcc);
 
-      // Clear form input
-      view.clearLoanInputs();
-    } catch (error) {
-      console.error(error);
-    } finally {
-      view.hideLoading();
-    }
-  },
+  //     // Clear form input
+  //     view.clearLoanInputs();
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     view.hideLoading();
+  //   }
+  // },
 
   async closeAccount(user, pin) {
     const usr = normalizeName(user);
@@ -165,16 +165,16 @@ export const accountController = {
     view.clearCloseAccountInputs();
   },
 
-  sortMovements() {
-    const currentAccount = state.currentAccount;
+  // sortMovements() {
+  //   const currentAccount = state.currentAccount;
 
-    const sortResult = state.sortState
-      ? currentAccount.movements
-      : model.sorting(currentAccount.movements);
+  //   const sortResult = state.sortState
+  //     ? currentAccount.movements
+  //     : model.sorting(currentAccount.movements);
 
-    view.showMovements(sortResult);
-    state.sortState = !state.sortState;
-  },
+  //   view.showMovements(sortResult);
+  //   state.sortState = !state.sortState;
+  // },
 
   logout() {
     auth.removeUser();
@@ -182,30 +182,30 @@ export const accountController = {
     view.showLoggedOutState();
   },
 
-  closeModal() {
-    view.closeModal();
-  },
+  // closeModal() {
+  //   view.closeModal();
+  // },
 };
 
 // =========================
 // EVENT
 // =========================
 function bindEvents() {
-  view.bindRegister(accountController.createAccount);
+  // view.bindRegister(accountController.createAccount);
 
   // view.bindLogin(accountController.login);
 
-  view.bindTransfer(accountController.transfer);
+  // view.bindTransfer(accountController.transfer);
 
-  view.bindLoan(accountController.loan);
+  // view.bindLoan(accountController.loan);
 
   view.bindLogout(accountController.logout);
 
   view.bindCloseAccount(accountController.closeAccount);
 
-  view.bindSorting(accountController.sortMovements);
+  // view.bindSorting(accountController.sortMovements);
 
-  view.bindCloseModal(accountController.closeModal);
+  // view.bindCloseModal(accountController.closeModal);
 }
 
 const init = async () => {
@@ -217,15 +217,15 @@ const init = async () => {
 
     bindEvents();
 
-    const sessionUser = auth.loadUser();
+    // const sessionUser = auth.loadUser();
 
-    if (sessionUser) {
-      const latestAccount = model.findAccountByUserId(sessionUser.id);
-      state.currentAccount = latestAccount;
-      controllerHelper.updateUI(latestAccount);
-      view.showSuccess(latestAccount);
-      view.showApp();
-    }
+    // if (sessionUser) {
+    //   const latestAccount = model.findAccountByUserId(sessionUser.id);
+    //   state.currentAccount = latestAccount;
+    //   controllerHelper.updateUI(latestAccount);
+    //   view.showSuccess(latestAccount);
+    //   view.showApp();
+    // }
   } catch (error) {
     console.error(error);
   } finally {

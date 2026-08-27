@@ -1,4 +1,4 @@
-import { model, state } from "../model.js";
+import { accountModel, state } from "../models/accountModel.js";
 import { validation } from "../validation.js";
 import { loginView } from "../views/loginView.js";
 import { auth } from "../helper.js";
@@ -6,15 +6,16 @@ import { auth } from "../helper.js";
 export const loginController = {
   async init() {
     try {
-      const users = await model.loadUsers();
+      const users = await accountModel.loadUsers();
       console.log(users);
 
-      loginView.bindLogin(loginController.login);
+      loginView.bindLogin(this.login);
     } catch (error) {
       console.error(error);
     } finally {
     }
   },
+
   login(formData) {
     try {
       state.sortState = false;
@@ -22,14 +23,14 @@ export const loginController = {
       const errors = validation.validateLogin(formData);
       console.log(errors);
 
-      loginView.clearErrors(errors);
+      loginView.clearErrors();
 
       if (errors.length) {
         loginView.renderErrors(errors);
         return; // !important
       }
 
-      const account = model.findAccountByUsername(formData.username);
+      const account = accountModel.findAccountByUsername(formData.username);
 
       if (!account) {
         loginView.renderErrors([
@@ -38,7 +39,7 @@ export const loginController = {
         return;
       }
 
-      if (account.pin !== Number(formData.password)) {
+      if (account.password !== Number(formData.password)) {
         loginView.renderErrors([
           { field: "password", message: "Wrong Password!" },
         ]);

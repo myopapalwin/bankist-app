@@ -1,11 +1,11 @@
 import { registerView } from "../views/registerView.js";
-import { model } from "../model.js";
+import { accountModel } from "../models/accountModel.js";
 import { auth, delay } from "../helper.js";
 import { validation } from "../validation.js";
 
 export const registerController = {
   async init() {
-    await model.loadUsers();
+    await accountModel.loadUsers();
     registerView.bindEventRegister(registerController.createAccount);
   },
 
@@ -21,7 +21,9 @@ export const registerController = {
         return;
       }
 
-      const usernameExists = model.findAccountByUsername(formData.username);
+      const usernameExists = accountModel.findAccountByUsername(
+        formData.username,
+      );
       console.log(usernameExists);
 
       if (usernameExists) {
@@ -35,7 +37,7 @@ export const registerController = {
 
       registerView.showLoading();
 
-      await model.createUserData(formData);
+      await accountModel.createUserData(formData);
 
       registerView.hideLoading();
 

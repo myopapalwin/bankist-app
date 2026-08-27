@@ -1,5 +1,6 @@
 const UI = {
   loading: { container: document.querySelector(".overlay") },
+  success: { container: document.querySelector(".success") },
 };
 export const baseView = {
   showLoading() {
@@ -8,6 +9,10 @@ export const baseView = {
 
   hideLoading() {
     UI.loading.container.classList.add("hidden");
+  },
+
+  showSuccess() {
+    UI.success.container.classList.remove("hidden");
   },
 
   renderErrors(errors) {
@@ -20,7 +25,6 @@ export const baseView = {
   clearErrors() {
     document.querySelectorAll("[data-error]").forEach((el) => {
       el.textContent = "";
-      console.log(el.textContent);
     });
   },
 };

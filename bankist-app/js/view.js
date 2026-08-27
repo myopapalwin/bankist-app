@@ -8,19 +8,19 @@ export const UI = {
   slogan: {
     welcome: document.querySelector(".welcome"),
   },
-  balance: {
-    value: document.querySelector(".balance__value"),
-    date: document.querySelector(".date"),
-  },
-  movements: {
-    container: document.querySelector(".movements"),
-  },
-  summary: {
-    in: document.querySelector(".summary__value--in"),
-    out: document.querySelector(".summary__value--out"),
-    interest: document.querySelector(".summary__value--interest"),
-    btnSort: document.querySelector(".btn--sort"),
-  },
+  // balance: {
+  //   value: document.querySelector(".balance__value"),
+  //   date: document.querySelector(".date"),
+  // },
+  // movements: {
+  //   container: document.querySelector(".movements"),
+  // },
+  // summary: {
+  //   in: document.querySelector(".summary__value--in"),
+  //   out: document.querySelector(".summary__value--out"),
+  //   interest: document.querySelector(".summary__value--interest"),
+  //   btnSort: document.querySelector(".btn--sort"),
+  // },
   // register: {
   //   // container: document.querySelector(".register"),
   //   form: document.querySelector(".register_form"),
@@ -38,32 +38,34 @@ export const UI = {
   //   pin: document.querySelector(".login__input--pin"),
   //   btn: document.querySelector(".login__btn"),
   // },
-  transfer: {
-    form: document.querySelector(".form--transfer"),
-    to: document.querySelector(".form__input--to"),
-    amount: document.querySelector(".form__input--amount"),
-    btn: document.querySelector(".form__btn--transfer"),
-  },
-  loan: {
-    form: document.querySelector(".form--loan"),
-    amount: document.querySelector(".form__input--loan-amount"),
-    btn: document.querySelector(".form__btn--loan"),
-  },
-  close: {
-    form: document.querySelector(".form--close"),
-    user: document.querySelector(".form__input--user"),
-    pin: document.querySelector(".form__input--pin"),
-    btn: document.querySelector(".form__btn--close"),
-  },
+
+  // transfer: {
+  //   form: document.querySelector(".form--transfer"),
+  //   to: document.querySelector(".form__input--to"),
+  //   amount: document.querySelector(".form__input--amount"),
+  //   btn: document.querySelector(".form__btn--transfer"),
+  // },
+
+  // loan: {
+  //   form: document.querySelector(".form--loan"),
+  //   amount: document.querySelector(".form__input--loan-amount"),
+  //   btn: document.querySelector(".form__btn--loan"),
+  // },
+  // close: {
+  //   form: document.querySelector(".form--close"),
+  //   user: document.querySelector(".form__input--user"),
+  //   pin: document.querySelector(".form__input--pin"),
+  //   btn: document.querySelector(".form__btn--close"),
+  // },
   timer: {
     label: document.querySelector(".timer"),
   },
-  modal: {
-    container: document.querySelector(".modal"),
-    modalClose: document.querySelector(".close-modal"),
-    overlay: document.querySelector(".overlay"),
-    error: document.querySelector(".error"),
-  },
+  // modal: {
+  //   container: document.querySelector(".modal"),
+  //   modalClose: document.querySelector(".close-modal"),
+  //   overlay: document.querySelector(".overlay"),
+  //   error: document.querySelector(".error"),
+  // },
   logout: {
     button: document.querySelector(".logout"),
   },
@@ -113,55 +115,55 @@ export const view = {
   //   });
   // },
 
-  showModal(message) {
-    UI.modal.container.classList.remove("hidden");
-    UI.modal.overlay.classList.remove("hidden");
-    UI.modal.error.textContent = message;
-  },
+  // showModal(message) {
+  //   UI.modal.container.classList.remove("hidden");
+  //   UI.modal.overlay.classList.remove("hidden");
+  //   UI.modal.error.textContent = message;
+  // },
 
-  closeModal() {
-    UI.modal.container.classList.add("hidden");
-    UI.modal.overlay.classList.add("hidden");
-  },
+  // closeModal() {
+  //   UI.modal.container.classList.add("hidden");
+  //   UI.modal.overlay.classList.add("hidden");
+  // },
 
-  showMovements(movements) {
-    UI.movements.container.innerHTML = "";
+  // showMovements(movements) {
+  //   UI.movements.container.innerHTML = "";
 
-    movements.forEach((movement, i) => {
-      // const type = movement > 0 ? "deposit" : "withdrawal";
-      const html = `
-      <div class="movements__row">
-        <div class="movements__type movements__type--${movement.type}">${
-          i + 1
-        } ${movement.type}</div>
-        <div class="movements__value">${movement.amount} USD</div>
-      </div>
-            `;
+  //   movements.forEach((movement, i) => {
+  //     // const type = movement > 0 ? "deposit" : "withdrawal";
+  //     const html = `
+  //     <div class="movements__row">
+  //       <div class="movements__type movements__type--${movement.type}">${
+  //         i + 1
+  //       } ${movement.type}</div>
+  //       <div class="movements__value">${movement.amount} USD</div>
+  //     </div>
+  //           `;
 
-      UI.movements.container.insertAdjacentHTML("afterbegin", html);
-    });
-  },
+  //     UI.movements.container.insertAdjacentHTML("afterbegin", html);
+  //   });
+  // },
 
-  renderSummary(summary) {
-    UI.balance.value.textContent = `${summary.balance} USD`;
-    UI.summary.in.textContent = `${Math.abs(summary.deposit)} USD`;
-    UI.summary.out.textContent = `${Math.abs(summary.withdraw)} USD`;
-    UI.summary.interest.textContent = summary.interest;
-  },
+  // renderSummary(summary) {
+  //   UI.balance.value.textContent = `${summary.balance} USD`;
+  //   UI.summary.in.textContent = `${Math.abs(summary.deposit)} USD`;
+  //   UI.summary.out.textContent = `${Math.abs(summary.withdraw)} USD`;
+  //   UI.summary.interest.textContent = summary.interest;
+  // },
 
   // clearLoginInput() {
   //   UI.login.user.value = "";
   //   UI.login.pin.value = "";
   // },
 
-  clearTransferInputs() {
-    UI.transfer.to.value = "";
-    UI.transfer.amount.value = "";
-  },
+  // clearTransferInputs() {
+  //   UI.transfer.to.value = "";
+  //   UI.transfer.amount.value = "";
+  // },
 
-  clearLoanInputs() {
-    UI.loan.amount.value = "";
-  },
+  // clearLoanInputs() {
+  //   UI.loan.amount.value = "";
+  // },
 
   clearCloseAccountInputs() {
     UI.close.user.value = "";
@@ -199,13 +201,13 @@ export const view = {
   // },
 
   // Events
-  bindRegister(handler) {
-    UI.register.form.addEventListener("submit", (e) => {
-      e.preventDefault();
+  // bindRegister(handler) {
+  //   UI.register.form.addEventListener("submit", (e) => {
+  //     e.preventDefault();
 
-      handler(this.getRegisterFormData());
-    });
-  },
+  //     handler(this.getRegisterFormData());
+  //   });
+  // },
   // bindLogin(handler) {
   //   UI.login.form.addEventListener("submit", (e) => {
   //     console.log("Login click");
@@ -221,15 +223,15 @@ export const view = {
       handler();
     });
   },
-  bindTransfer(handler) {
-    UI.transfer.form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const reciver = UI.transfer.to.value;
-      const amount = UI.transfer.amount.value;
+  // bindTransfer(handler) {
+  //   UI.transfer.form.addEventListener("submit", (e) => {
+  //     e.preventDefault();
+  //     const reciver = UI.transfer.to.value;
+  //     const amount = UI.transfer.amount.value;
 
-      handler(reciver, amount);
-    });
-  },
+  //     handler(reciver, amount);
+  //   });
+  // },
   bindLoan(handler) {
     UI.loan.form.addEventListener("submit", (e) => {
       e.preventDefault();
