@@ -36,6 +36,14 @@
         {
           "amount": 200,
           "type": "deposit"
+        },
+        {
+          "amount": -200,
+          "type": "withdrawal"
+        },
+        {
+          "amount": 300,
+          "type": "deposit"
         }
       ],
       "interest_rate": 1.2,
@@ -117,6 +125,10 @@
       "transactions": [
         {
           "amount": 4444,
+          "type": "deposit"
+        },
+        {
+          "amount": 200,
           "type": "deposit"
         }
       ],
